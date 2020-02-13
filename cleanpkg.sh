@@ -1,5 +1,8 @@
 #!/bin/bash
 rm -f *~
+rm codep.Rcheck.tar.gz
+tar cvzf codep.Rcheck.tar.gz codep.Rcheck
+rm -rf codep.Rcheck
 rm -f codep/*~
 rm -f codep/man/*~
 rm -f codep/R/*~
