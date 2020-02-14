@@ -1,13 +1,15 @@
 #!/bin/bash
+PKG='codep'
 rm -f *~
-rm codep.Rcheck.tar.gz
-tar cvzf codep.Rcheck.tar.gz codep.Rcheck
-rm -rf codep.Rcheck
-rm -f codep/*~
-rm -f codep/man/*~
-rm -f codep/R/*~
-rm -f codep/src/*~
-rm -f codep/src/*.so
-rm -f codep/src/*.o
-rm -f codep/src/*.rds
-cd codep && find -type f \( -not -name "MD5" \) -exec md5sum '{}' \; > MD5
+rm $PKG.Rcheck.tar.gz
+tar cvzf $PKG.Rcheck.tar.gz $PKG.Rcheck
+rm -rf $PKG.Rcheck
+rm -f $PKG/*~
+rm -f $PKG/man/*~
+rm -f $PKG/R/*~
+rm -f $PKG/src/*~
+rm -f $PKG/src/*.so
+rm -f $PKG/src/*.o
+rm -f $PKG/src/*.rds
+cd $PKG && find -type f \( -not -name "MD5" \) -exec md5sum '{}' \; > MD5
+
