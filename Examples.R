@@ -62,7 +62,7 @@ map2 <- eigenmap(x=Doubs.geo[,"DFS"])
 mca3 <- MCA(Y=log1p(Doubs.fish),X=Doubs.env,emobj=map2)
 mca3
 mca3_pertest <- permute.cdp(mca3)
-## Not run: 
+## Not run:
 ## or:
 mca3_pertest <- parPermute.cdp(mca3,permute=999999)
 
