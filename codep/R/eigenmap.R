@@ -1,7 +1,8 @@
-#
+##
 eigenmap <- function(x,opt.coord=NA,weighting=Wf.sqrd,boundaries,wpar,select=.Machine$double.eps^0.5) {
-#
-  if(!is.function(weighting)) stop("Parameter 'weighting' must be a weighting function.")
+##
+  if(!is.function(weighting))
+    stop("Parameter 'weighting' must be a weighting function.")
   if(!is.numeric(x)) stop("Parameter 'x' must be numeric!")
   if(inherits(x,"dist")) {
     D <- as.matrix(x)
@@ -11,7 +12,9 @@ eigenmap <- function(x,opt.coord=NA,weighting=Wf.sqrd,boundaries,wpar,select=.Ma
     } else {
       opt.coord <- as.matrix(opt.coord)
       if(nrow(opt.coord) != nrow(D)) {
-        stop(paste("You provided",nrow(opt.coord),"optional coordinates to reference", nrow(D),"observations!"))
+        stop(paste("You provided",nrow(opt.coord),
+                   "optional coordinates to reference", nrow(D),
+                   "observations!"))
       } else rownames(opt.coord) <- rownames(D)
     }
   } else {
@@ -23,7 +26,8 @@ eigenmap <- function(x,opt.coord=NA,weighting=Wf.sqrd,boundaries,wpar,select=.Ma
   wformals <- names(formals(weighting))
   if(any(wformals == "boundaries") && missing(boundaries)) {
     boundaries <- c(0,max(hclust(x,method="single")$height))
-    warning("No boundaries given, they were set to (",boundaries[1L],"; ",boundaries[2L],")")
+    warning("No boundaries given, they were set to (",boundaries[1L],"; ",
+            boundaries[2L],")")
   }
   if(any(wformals == "boundaries")) {
     if(any(wformals == "wpar") && !missing(wpar))
@@ -43,7 +47,8 @@ eigenmap <- function(x,opt.coord=NA,weighting=Wf.sqrd,boundaries,wpar,select=.Ma
   O <- W - term - t(term) + MW
   eigO <- eigen(O)
   variables <- eigO$vectors[,abs(eigO$values) >= select]
-  rownames(variables) <- rownames(D) ; colnames(variables) <- paste("dbMEM",1L:ncol(variables),sep="")
+  rownames(variables) <- rownames(D)
+  colnames(variables) <- paste("dbMEM",1L:ncol(variables),sep="")
   return(structure(list(
     coordinates=opt.coord,
     D=D,weighting=weighting,
@@ -53,18 +58,18 @@ eigenmap <- function(x,opt.coord=NA,weighting=Wf.sqrd,boundaries,wpar,select=.Ma
     lambda=eigO$values[abs(eigO$values) >= select],
     U=variables),class="eigenmap"))
 }
-#
+##
 Wf.sqrd <- function(D) return(-0.5 * D)
-#
+##
 Wf.RBF <- function(D,wpar=1) return(exp(-wpar * D**2))
-#
+##
 Wf.binary <- function(D,boundaries) {
   b <- matrix(0, nrow(D), ncol(D))
   b[D > boundaries[1L] & D <= boundaries[2L]] <- 1
   diag(b) <- 0
   return(b)
 }
-#
+##
 Wf.PCNM <- function(D,boundaries) {
   b <- Wf.binary(D, boundaries)
   a <- 1 - (D / (4 * boundaries[2L]))**2
@@ -72,7 +77,7 @@ Wf.PCNM <- function(D,boundaries) {
   diag(W) <- 0
   return(W)
 }
-#
+##
 Wf.Drayf1 <- function(D,boundaries) {
   b <- Wf.binary(D, boundaries)
   a <- 1 - D / max(D)
@@ -80,7 +85,7 @@ Wf.Drayf1 <- function(D,boundaries) {
   diag(W) <- 0
   return(W)
 }
-#
+##
 Wf.Drayf2 <- function(D,boundaries,wpar=1) {
   b <- Wf.binary(D, boundaries)
   a <- 1 - (D / max(D))^wpar
@@ -88,7 +93,7 @@ Wf.Drayf2 <- function(D,boundaries,wpar=1) {
   diag(W) <- 0
   return(W)
 }
-#
+##
 Wf.Drayf3 <- function(D,boundaries,wpar=1) {
   b <- Wf.binary(D, boundaries)
   a <- 1 / D^wpar
@@ -96,7 +101,7 @@ Wf.Drayf3 <- function(D,boundaries,wpar=1) {
   diag(W) <- 0
   return(W)
 }
-#
+##
 eigenmap.score <- function(object,target) {
   if(!is.matrix(target)) attr(target,"dim") <- c(1L,length(target))
   n <- ncol(object$D)
@@ -122,7 +127,7 @@ eigenmap.score <- function(object,target) {
   colnames(scores) <- colnames(object$U)
   return(scores)
 }
-#
+##
 print.eigenmap <- function(x,...) {
   cat(paste("\nMoran's eigenvector map containing",length(x$lambda),"basis functions.\n"))
   cat(paste("Functions span",nrow(x$U),"observations.\n\n"))
@@ -131,7 +136,7 @@ print.eigenmap <- function(x,...) {
   cat("\n")
   return(invisible(NULL))
 }
-#
+##
 plot.eigenmap <- function(x,...) {
   if (ncol(x$coordinates) > 2) {
     warning(paste(ncol(x$coordinates),"dimensions were provided but only the first 2 were used for plotting."))
@@ -156,4 +161,4 @@ plot.eigenmap <- function(x,...) {
   }
   return(invisible(NULL))
 }
-#
+##
