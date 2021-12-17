@@ -35,7 +35,6 @@
 #' @param x A set of coordinates in the form of a \code{\link{matrix}} or
 #' \code{\link{data.frame}}.
 #' @param y An optional second set of coordinates in the same forms as \code{x}.
-#' @param w An optional set of weights to be applied on the coordinates.
 #' @param squared Should the squared Euclidean distances be returned (default:
 #' FALSE).
 #' 
@@ -60,57 +59,75 @@
 #' provided two data matrices (\code{x} and \code{y}) and output a rectangular
 #' matrix of the Euclidean distances between their rows.
 #' 
-#' @author Guillaume Guénard \email{guillaume.guenard@@umontreal.ca}
+#' @author \packageAuthor{codep}
+#' Maintainer: \packageMaintainer{codep}
 #' 
 #' @seealso The \code{\link{dist}-class} and associated methods.
 #' 
-#' @references
-#' [To be included...]
+#' @importFrom stats dist
 #' 
 #' @examples
-#' ##
-#' ### First example
-#' ##
-#' ## [Examples here...]
+#' ## A set of reference points:
+#' x <- cbind(c(1,4,5,2,8,4), c(3,6,7,1,3,2))
+#' dimnames(x) <- list(LETTERS[1:6], c("x", "y"))
+#' 
+#' ## The pairwise Euclidean distances among the reference points: 
+#' d1 <- Euclid(x)
+#' d1
+#' 
+#' ## That result is the same as that obtained from function dist:
+#' d2 <- dist(x, method = "euclidean")
+#' all(d1 == d2)
+#' 
+#' ## A second set of points:
+#' y <- cbind(c(3,5,7), c(3,6,8))
+#' dimnames(y) <- list(LETTERS[7:9], c("x", "y"))
+#' 
+#' ## The distances between the points in y (rows) and x (columns):
+#' Euclid(x, y)
 #' 
 #' @useDynLib codep, .registration = TRUE
 #' 
 #' @export
-Euclid <- function(x, y, w, squared=FALSE) {
+Euclid <- function(x, y, squared=FALSE) {
   m <- NCOL(x)
-  if(!is.matrix(x))
+  if (!is.matrix(x))
     x <- as.matrix(x)
   storage.mode(x) <- "double"
-  if(!missing(y)) {
+  if (!missing(y)) {
     if(NCOL(y)!=m)
       stop("'y' must have the same number of coordinates as 'x'!")
     if(!is.matrix(y))
       y <- as.matrix(y)
     storage.mode(y) <- "double"
     N <- c(NROW(x),NROW(y))
-    out <- matrix(0,N[2L],N[1L])
-    rownames(out) <- dimnames(y)[1L]
-    colnames(out) <- dimnames(x)[1L]
+    out <- matrix(0, N[2L], N[1L])
+    rownames(out) <- dimnames(y)[[1L]]
+    colnames(out) <- dimnames(x)[[1L]]
   } else {
     N <- c(NROW(x),NROW(x))
     out <- double(N[1L]*(N[1L]-1L)/2)
   }
-  if(!missing(w)) {
-    if(length(w)!=m)
-      stop("The number of weights must equal the number of coordinates!")
-    storage.mode(w) <- "double"
-  }
-  res <- .C("dist_Euclid",x,if(missing(y)) x else y,N,missing(y),m,out,
-            if(missing(w)) double() else w,!missing(w),squared)
-  out[] <- res[[5L]]
-  if(missing(y)) {
-    attr(out,"class") <- "dist"
-    attr(out,"Size") <- N[1L]
-    attr(out,"Labels") <- dimnames(x)[[1L]]
-    attr(out,"Diag") <- FALSE
-    attr(out,"Upper") <- FALSE
-    attr(out,"Method") <- "euclidean"
-    attr(out,"Call") <- match.call()
+  res <- .C(
+    "dist_Euclid",
+    x,
+    if(missing(y)) x else y,
+    N,
+    missing(y),
+    m,
+    out,
+    squared
+  )
+  out[] <- res[[6L]]
+  attr(out, "method") <- "euclidean"
+  attr(out, "call") <- match.call()
+  if (missing(y)) {
+    attr(out, "Size") <- N[1L]
+    attr(out, "Labels") <- dimnames(x)[[1L]]
+    attr(out, "Diag") <- FALSE
+    attr(out, "Upper") <- FALSE
+    attr(out, "class") <- "dist"
   }
   return(out)
 }
+#'

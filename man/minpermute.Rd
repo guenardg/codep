@@ -58,6 +58,6 @@ scales. Ecology 91: 2952-2964
 \link{permute.cdp}
 }
 \author{
-Guillaume Guénard, Département des sciences biologiques, Université
-de Montréal, Montréal, Québec, Canada.
+\packageAuthor{codep}
+Maintainer: \packageMaintainer{codep}
 }

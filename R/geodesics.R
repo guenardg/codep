@@ -86,7 +86,8 @@
 #' 
 #' Geodesic distance matrices are nonmetric.
 #' 
-#' @author Guillaume Guénard \email{guillaume.guenard@@umontreal.ca}
+#' @author \packageAuthor{codep}
+#' Maintainer: \packageMaintainer{codep}
 #' 
 #' @seealso The \code{\link{dist}-class} and associated methods.
 #' 
@@ -128,48 +129,69 @@
 geodesics <- function(x, y, method=c("haversine","Vincenty"),
                       radius=6.371e6, sma=6378137.0, flat=1/298.257223563,
                       maxiter=1024L,tol=.Machine$double.eps^0.75) {
-  if(NCOL(x)!=2L)
+  if (NCOL(x)!=2L)
     stop("'x' must be Lat Lon geodesic coordinates!")
-  if(!is.matrix(x))
+  if (!is.matrix(x))
     x <- as.matrix(x)
   storage.mode(x) <- "double"
   method <- match.arg(method)
-  if(!missing(y)) {
+  if (!missing(y)) {
     if(NCOL(y)!=2L)
       stop("'y' must be Lat Lon geodesic coordinates!")
     if(!is.matrix(y))
       y <- as.matrix(y)
     storage.mode(y) <- "double"
     N <- c(NROW(x),NROW(y))
-    out <- matrix(0,N[2L],N[1L])
-    rownames(out) <- dimnames(y)[1L]
-    colnames(out) <- dimnames(x)[1L]
+    out <- matrix(0, N[2L], N[1L])
+    rownames(out) <- dimnames(y)[[1L]]
+    colnames(out) <- dimnames(x)[[1L]]
   } else {
     N <- c(NROW(x),NROW(x))
     out <- double(N[1L]*(N[1L]-1L)/2)
   }
-  if(method == "haversine")
-    res <- .C("dist_geo_hvs",x,if(missing(y)) x else y,N,missing(y),out,radius)
-  if(method == "Vincenty") {
+  if (method == "haversine")
+    res <- .C(
+      "dist_geo_hvs",
+      x,
+      if(missing(y)) x else y,
+      N,
+      missing(y),
+      out,
+      radius
+    )
+  if (method == "Vincenty") {
     niter <- integer(length(out))
-    res <- .C("dist_geo_vif",x,if(missing(y)) x else y,N,missing(y),out,niter,
-              sma,flat,maxiter,tol)
+    res <- .C(
+      "dist_geo_vif",
+      x,
+      if(missing(y)) x else y,
+      N,
+      missing(y),
+      out,
+      niter,
+      sma,
+      flat,
+      maxiter,
+      tol
+    )
   }
   out[] <- res[[5L]]
-  if(missing(y)) {
-    attr(out,"class") <- "dist"
-    attr(out,"Size") <- N[1L]
-    attr(out,"Labels") <- dimnames(x)[[1L]]
-    attr(out,"Diag") <- FALSE
-    attr(out,"Upper") <- FALSE
-    attr(out,"Method") <- sprintf("geodesic:%s",method)
-    attr(out,"Call") <- match.call()
-    if(method == "Vincenty")
-      attr(out,"niter") <- res[[6L]]
+  attr(out, "method") <- sprintf("geodesic:%s", method)
+  attr(out, "call") <- match.call()
+  if (missing(y)) {
+    attr(out, "Size") <- N[1L]
+    attr(out, "Labels") <- dimnames(x)[[1L]]
+    attr(out, "Diag") <- FALSE
+    attr(out, "Upper") <- FALSE
+    if (method == "Vincenty")
+      attr(out, "niter") <- res[[6L]]
+    attr(out, "class") <- "dist"
   }
-  if(method == "Vincenty")
-    attr(out,"niter") <- res[[6L]]
-  if(method == "Vincenty" && any(res[[6L]]>maxiter))
-    warning("Convergence failed for ",sum(res[[6L]]>maxiter)," distance(s)!")
+  if (method == "Vincenty" && any(res[[6L]] > maxiter))
+    warning(
+      "Convergence failed for ",
+      sum(res[[6L]]>maxiter),
+      " distance(s)!"
+    )
   return(out)
 }

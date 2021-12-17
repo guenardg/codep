@@ -56,8 +56,8 @@
 #' own margins and round-up factors to calculate the number of permutations for
 #' use with \code{\link{permute.cdp}}.
 #' 
-#' @author Guillaume Guénard, Département des sciences biologiques, Université
-#' de Montréal, Montréal, Québec, Canada.
+#' @author \packageAuthor{codep}
+#' Maintainer: \packageMaintainer{codep}
 #' 
 #' @seealso \link{permute.cdp}
 #' 
@@ -79,6 +79,7 @@ minpermute <- function(alpha, nbtest, margin=1, ru=3)
     round(
       floor(
         margin * (1 - (1 - alpha)^(nbtest^-1))^-1
-      ), -ru
+      ),
+      -ru
     ) + (10^ru) - 1
   )

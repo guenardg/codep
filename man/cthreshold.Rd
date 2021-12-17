@@ -47,6 +47,6 @@ Legendre, P. and Legendre, L. 1998. Numerical Ecology. Elsevier
 Science B.V., Amsterdam, The Neatherlands. p. 18
 }
 \author{
-Guillaume Guénard, Département des sciences biologiques, Université
-de Montréal, Montréal, Québec, Canada.
+\packageAuthor{codep}
+Maintainer: \packageMaintainer{codep}
 }

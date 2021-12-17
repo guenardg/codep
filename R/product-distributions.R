@@ -67,8 +67,8 @@
 #' tests for single response variables, in which case unilateral tests can be
 #' performed.
 #' 
-#' @author Guillaume Guénard, Département des sciences biologiques, Université
-#' de Montréal, Montréal, Québec, Canada.
+#' @author \packageAuthor{codep}
+#' Maintainer: \packageMaintainer{codep}
 #' 
 #' @seealso \link{test.cdp}
 #' 
@@ -87,7 +87,6 @@
 #' @examples
 #' ### Displays the phi probability distribution for five different numbers
 #' ### of degrees of freedom:
-#' ##
 #' x <- 10^seq(-4, 0.5, 0.05)
 #' plot(y = dphi(x, 1, 10), x = x, type = "l", col = "black", las = 1,
 #' ylab = "pdf", ylim = c(0, 0.5))
@@ -95,10 +94,9 @@
 #' lines(y = dphi(x, 5, 70), x = x, col = "blue")
 #' lines(y = dphi(x, 12, 23), x = x, col = "green")
 #' lines(y = dphi(x, 35, 140), x = x, col = "red")
-#' ##
+#' 
 #' ### Displays the density distribution function for 10 degrees of freedom
 #' ### and the cumulative probability above x = 1.
-#' ##
 #' x <- 10^seq(-4, 0.5, 0.05)
 #' y <- dphi(x, 5, 70)
 #' plot(y = y, x = x, type = "l", col = "black", las = 1, ylab = "Density",
@@ -106,9 +104,8 @@
 #' polygon(x = c(x[81L:91], x[length(x)], 1), y = c(y[81L:91], 0, 0),
 #'         col = "grey")
 #' text(round(pphi(1, 5, 70, lower.tail=FALSE), 3), x = 1.75, y = 0.05)
-#' ##
-#' ### Idem for the tau distribution:
-#' ##
+#' 
+#' ## Idem for the tau distribution:
 #' x <- c(-(10^seq(0.5, -4, -0.05)), 10^seq(-4, 0.5, 0.05))
 #' plot(y = dtau(x, 1), x = x, type = "l", col = "black", las = 1,
 #'      ylab = "pdf", ylim = c(0, 0.5))
@@ -116,7 +113,7 @@
 #' lines(y = dtau(x, 5), x = x, col="blue")
 #' lines(y = dtau(x, 10), x = x, col="green")
 #' lines(y = dtau(x, 100), x = x, col="red")
-#' ##
+#' 
 #' y <- dtau(x, 10)
 #' plot(y = y, x = x, type = "l", col = "black", las = 1, ylab = "Density",
 #'      ylim = c(0, 0.5))
@@ -138,17 +135,24 @@ NULL
 #' @export
 dphi <- function(x, nu1, nu2, tol = .Machine$double.eps ^ 0.5) {
   res <- numeric(length(x))
-  nu1 <- rep(nu1, length.out = length(x))
-  nu2 <- rep(nu2, length.out = length(x))
+  nu1 <- rep(nu1, length.out=length(x))
+  nu2 <- rep(nu2, length.out=length(x))
   ## Integrand function to be integrated over positive real numbers.
   f <- function(z, x, nu1, nu2)
     df(z, nu1, nu1 * nu2) * df(x / z, 1, nu2) / z
   ## abs(z) always == z for real positive.
   ## The integrand is strictly positive.
-  for(i in 1L:length(x))
-    res[i] <- integrate(f, lower = 0, upper = Inf, x = x[i], nu1 = nu1[i],
-                        nu2 = nu2[i], rel.tol = tol)$value
-  res
+  for (i in 1L:length(x))
+    res[i] <- integrate(
+      f,
+      lower = 0,
+      upper = Inf,
+      x = x[i],
+      nu1 = nu1[i],
+      nu2 = nu2[i],
+      rel.tol = tol
+    )$value
+  return(res)
 }
 #'
 #' @describeIn product-distribution
@@ -159,17 +163,31 @@ dphi <- function(x, nu1, nu2, tol = .Machine$double.eps ^ 0.5) {
 pphi <- function(q, nu1, nu2, lower.tail = TRUE,
                  tol = .Machine$double.eps^0.5) {
   res <- numeric(length(q))
-  nu1 <- rep(nu1, length.out = length(q))
-  nu2 <- rep(nu2, length.out = length(q))
-  if(lower.tail)
-    for(i in 1L:length(q))
-      res[i] <- 1 - integrate(dphi, lower = q[i], upper = Inf, nu1 = nu1[i],
-                              nu2 = nu2[i], tol = tol, rel.tol = tol)$value
+  nu1 <- rep(nu1, length.out=length(q))
+  nu2 <- rep(nu2, length.out=length(q))
+  if (lower.tail)
+    for (i in 1L:length(q))
+      res[i] <- 1 - integrate(
+        dphi,
+        lower = q[i],
+        upper = Inf,
+        nu1 = nu1[i],
+        nu2 = nu2[i],
+        tol = tol,
+        rel.tol = tol
+      )$value
   else
-    for(i in 1L:length(q))
-      res[i] <- integrate(dphi, lower = q[i], upper = Inf, nu1 = nu1[i],
-                          nu2 = nu2[i], tol = tol, rel.tol = tol)$value
-  res
+    for (i in 1L:length(q))
+      res[i] <- integrate(
+        dphi,
+        lower = q[i],
+        upper = Inf,
+        nu1 = nu1[i],
+        nu2 = nu2[i],
+        tol = tol,
+        rel.tol = tol
+      )$value
+  return(res)
 }
 #'
 #' @describeIn product-distribution
@@ -179,16 +197,22 @@ pphi <- function(q, nu1, nu2, lower.tail = TRUE,
 #' @export
 dtau <- function(x, nu, tol = .Machine$double.eps ^ 0.5) {
   res <- numeric(length(x))
-  nu <- rep(nu, length.out = length(x))
+  nu <- rep(nu, length.out=length(x))
   ## Integrand function to be integrated over positive real numbers.
   f <- function(z, x, nu)
     dt(z, nu) * dt(x / z, nu) / z   ## abs(z) always == z for real positive.
   ## The integrand being symmetric, only the positive is integrated and the
   ## result multiplied by two.
-  for(i in 1L:length(x))
-    res[i] <- 2 * integrate(f, lower = 0, upper = Inf, x = x[i], nu = nu[i],
-                            rel.tol = tol)$value
-  res
+  for (i in 1L:length(x))
+    res[i] <- 2 * integrate(
+      f,
+      lower = 0,
+      upper = Inf,
+      x = x[i],
+      nu = nu[i],
+      rel.tol = tol
+    )$value
+  return(res)
 }
 #'
 #' @describeIn product-distribution
@@ -198,31 +222,55 @@ dtau <- function(x, nu, tol = .Machine$double.eps ^ 0.5) {
 #' @export
 ptau <- function(q, nu, lower.tail = TRUE, tol = .Machine$double.eps^0.5) {
   res <- rep(0.5, length(q))
-  nu <- rep(nu, length.out = length(q))
+  nu <- rep(nu, length.out=length(q))
   ## Only the positive 
   signq <- sign(q)
   q <- abs(q)
   ## Code avoid calculate PDF(0) because the function has a singularity at that
   ## point.
-  if(lower.tail) {
-    for(i in which(!!signq)) {
-      if(signq[i]==1)
-        res[i] <- 1 - integrate(dtau, lower = q[i], upper = Inf, nu = nu[i],
-                                tol = tol, rel.tol = tol)$value
+  if (lower.tail) {
+    for (i in which(!!signq)) {
+      if (signq[i]==1)
+        res[i] <- 1 - integrate(
+          dtau,
+          lower = q[i],
+          upper = Inf,
+          nu = nu[i],
+          tol = tol,
+          rel.tol = tol
+        )$value
       else
-        res[i] <- integrate(dtau, lower = q[i], upper = Inf, nu = nu[i],
-                            tol = tol, rel.tol = tol)$value
+        res[i] <- integrate(
+          dtau,
+          lower = q[i],
+          upper = Inf,
+          nu = nu[i],
+          tol = tol,
+          rel.tol = tol
+        )$value
     }
   } else {
-    for(i in which(!!signq)) {
-      if(signq[i]==1)
-        res[i] <- integrate(dtau, lower = q[i], upper = Inf, nu = nu[i],
-                            tol = tol, rel.tol = tol)$value
+    for (i in which(!!signq)) {
+      if (signq[i] == 1)
+        res[i] <- integrate(
+          dtau,
+          lower = q[i],
+          upper = Inf,
+          nu = nu[i],
+          tol = tol,
+          rel.tol = tol
+        )$value
       else
-        res[i] <- 1 - integrate(dtau, lower = q[i], upper = Inf, nu = nu[i],
-                                tol = tol, rel.tol = tol)$value
+        res[i] <- 1 - integrate(
+          dtau,
+          lower = q[i],
+          upper = Inf,
+          nu = nu[i],
+          tol = tol,
+          rel.tol = tol
+        )$value
     }
   }
-  res
+  return(res)
 }
-##
+#' 

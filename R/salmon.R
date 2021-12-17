@@ -66,4 +66,5 @@
 #' summary(salmon)
 #' 
 #' @keywords salmon
+#' 
 NULL

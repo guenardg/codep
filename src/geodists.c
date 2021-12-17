@@ -142,7 +142,7 @@ void dist_geo_vif(double* from, double* to, int* n, int* tri,
 
 void dist_Euclid(double* from, double* to, int* n, int* tri, int* m,
                  double* d,
-                 double* w, int* wt, int* sq) {
+                 int* sq) {
   int end, i, j, k, l, ii, jj;
   double acc;
   end = (*tri) ? n[0]*(n[0]-1)/2 : n[0]*n[1];
@@ -151,7 +151,7 @@ void dist_Euclid(double* from, double* to, int* n, int* tri, int* m,
         ii += n[0], jj += n[1]) {
       acc = from[ii] - to[jj];
       acc *= acc;
-      d[k] += (*wt) ? w[l] * acc : acc;
+      d[k] += acc;
     }
     if(!*sq)
       d[k] = sqrt(d[k]);

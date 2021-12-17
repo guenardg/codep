@@ -121,5 +121,6 @@ Seamen (3 ed.). London, UK: W. Woodward, C. & J. Rivington
 The \code{\link{dist}-class} and associated methods.
 }
 \author{
-Guillaume Guénard \email{guillaume.guenard@umontreal.ca}
+\packageAuthor{codep}
+Maintainer: \packageMaintainer{codep}
 }

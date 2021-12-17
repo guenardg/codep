@@ -26,9 +26,9 @@
 ##
 ## **************************************************************************
 ##
-#' The Doubs Fish Data
+#' The Oribatid Mite Data Set
 #' 
-#' Fish community composition of the Doubs River, France.
+#' Borcard et al's oribatid mite community composition from Lac Geai, Canada.
 #' 
 #' @docType data
 #' 

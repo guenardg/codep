@@ -4,15 +4,13 @@
 \alias{Euclid}
 \title{Calculation of the Euclidean Distance}
 \usage{
-Euclid(x, y, w, squared = FALSE)
+Euclid(x, y, squared = FALSE)
 }
 \arguments{
 \item{x}{A set of coordinates in the form of a \code{\link{matrix}} or
 \code{\link{data.frame}}.}
 
 \item{y}{An optional second set of coordinates in the same forms as \code{x}.}
-
-\item{w}{An optional set of weights to be applied on the coordinates.}
 
 \item{squared}{Should the squared Euclidean distances be returned (default:
 FALSE).}
@@ -46,18 +44,30 @@ provided two data matrices (\code{x} and \code{y}) and output a rectangular
 matrix of the Euclidean distances between their rows.
 }
 \examples{
-##
-### First example
-##
-## [Examples here...]
+## A set of reference points:
+x <- cbind(c(1,4,5,2,8,4), c(3,6,7,1,3,2))
+dimnames(x) <- list(LETTERS[1:6], c("x", "y"))
 
-}
-\references{
-[To be included...]
+## The pairwise Euclidean distances among the reference points: 
+d1 <- Euclid(x)
+d1
+
+## That result is the same as that obtained from function dist:
+d2 <- dist(x, method = "euclidean")
+all(d1 == d2)
+
+## A second set of points:
+y <- cbind(c(3,5,7), c(3,6,8))
+dimnames(y) <- list(LETTERS[7:9], c("x", "y"))
+
+## The distances between the points in y (rows) and x (columns):
+Euclid(x, y)
+
 }
 \seealso{
 The \code{\link{dist}-class} and associated methods.
 }
 \author{
-Guillaume Guénard \email{guillaume.guenard@umontreal.ca}
+\packageAuthor{codep}
+Maintainer: \packageMaintainer{codep}
 }

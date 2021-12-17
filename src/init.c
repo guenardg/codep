@@ -33,8 +33,7 @@ extern void mcapermute(double*, double*, double*, int*, double*, double*, int*,
 extern void dist_geo_hvs(double*, double*, int*, int*, double*, double*);
 extern void dist_geo_vif(double*, double*, int*, int*, double*, int*,
                          double*, double*, int*, double*);
-extern void dist_Euclid(double*, double*, int*, int*, int*, double*, double*,
-                        int*, int*);
+extern void dist_Euclid(double*, double*, int*, int*, int*, double*, int*);
 // extern void scf_spher(double*, double*, double*, int*, int*, double*);
 // extern void scf_expon(double*, double*, double*, int*, int*, double*);
 // extern void scf_power(double*, double*, double*, int*, int*, double*);
@@ -49,7 +48,7 @@ static const R_CMethodDef CEntries[] = {
   {"mcapermute",    (DL_FUNC) &mcapermute,   11},
   {"dist_geo_hvs",  (DL_FUNC) &dist_geo_hvs,  6},
   {"dist_geo_vif",  (DL_FUNC) &dist_geo_vif, 10},
-  {"dist_Euclid",   (DL_FUNC) &dist_Euclid,   9},
+  {"dist_Euclid",   (DL_FUNC) &dist_Euclid,   7},
 //  {"scf_spher",     (DL_FUNC) &scf_spher,     6},
 //  {"scf_expon",     (DL_FUNC) &scf_expon,     6},
 //  {"scf_power",     (DL_FUNC) &scf_power,     6},

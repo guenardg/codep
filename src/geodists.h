@@ -47,6 +47,6 @@ void dist_geo_vif(double* from, double* to, int* n, int* tri,
 
 void dist_Euclid(double* from, double* to, int* n, int* tri, int* m,
                  double* d,
-                 double* w, int* wt, int* sq);
+                 int* sq);
 
 #endif

@@ -6,7 +6,7 @@
 \alias{mite.species}
 \alias{mite.env}
 \alias{mite.geo}
-\title{The Doubs Fish Data}
+\title{The Oribatid Mite Data Set}
 \format{
 Contains three matrices:
 \describe{
@@ -24,7 +24,7 @@ Montréal, Montréal, Québec, Canada.
 data(mite)
 }
 \description{
-Fish community composition of the Doubs River, France.
+Borcard et al's oribatid mite community composition from Lac Geai, Canada.
 }
 \details{
 Values in \code{mite.species} are counts of individuals of each of

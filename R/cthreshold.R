@@ -47,8 +47,8 @@
 #' allows to obtain correct, familywise, alpha thresholds in the context of
 #' multiple testing. It is base on the Sidak inegality.
 #' 
-#' @author Guillaume Guénard, Département des sciences biologiques, Université
-#' de Montréal, Montréal, Québec, Canada.
+#' @author \packageAuthor{codep}
+#' Maintainer: \packageMaintainer{codep}
 #' 
 #' @seealso Legendre, P. and Legendre, L. 1998. Numerical Ecology. Elsevier
 #' Science B.V., Amsterdam, The Neatherlands. p. 18
