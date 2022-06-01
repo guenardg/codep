@@ -1,6 +1,6 @@
 ## **************************************************************************
 ##
-##    (c) 2018-2021 Guillaume Guénard
+##    (c) 2018-2022 Guillaume Guénard
 ##        Department de sciences biologiques,
 ##        Université de Montréal
 ##        Montreal, QC, Canada
@@ -52,12 +52,12 @@
 #' reference therein for details about sample treatment and species
 #' identification.
 #' 
-#' \code{mite.env} contains two quantitative variables, namely the substratum
-#' density (g/L) and water content (percent wet mass over dry mass), in addition
-#' to 12 dummy variables. The first seven represent the composition of the
-#' substratum: \emph{Sphagnum magellacinum} (with a majority of
-#' \emph{S. rubellum}), \emph{S. rubellum}, \emph{S. nemorum}, (with a majority
-#' of \emph{S. augustifollium}), \emph{S. rubellum} + \emph{S. magellicum} (in
+#' `mite.env` contains two quantitative variables, namely the substratum density
+#' (g/L) and water content (percent wet mass over dry mass), in addition to 12
+#' dummy variables. The first seven represent the composition of the substratum:
+#' \emph{Sphagnum magellacinum} (with a majority of \emph{S. rubellum}),
+#' \emph{S. rubellum}, \emph{S. nemorum}, (with a majority of
+#' \emph{S. augustifollium}), \emph{S. rubellum} + \emph{S. magellicum} (in
 #' equal proportions), lignous litter, bare peat, and interface between
 #' \emph{Sphagnum} species. The next three dummy variables represent the
 #' presence and abundance of shrubs (\emph{Kalmia polifolia},
@@ -65,11 +65,11 @@
 #' and many. The last two dummy variables represent the microtopography of the
 #' peat: blanket (flat) or hummock (raised).
 #' 
-#' \code{mite.geo} contains the location of the samples, in meters, with respect
-#' to the sampling grid. Point (0,0) is the lower left end of the plot for an
-#' observer looking from the shore towards the water. The \code{x} coordinate is
-#' the offset along the shore (from left to right) while the \code{y} coordinate
-#' is the offset from the shore while moving towards the water (See Borcard &
+#' `mite.geo` contains the location of the samples, in meters, with respect to
+#' the sampling grid. Point (0,0) is the lower left end of the plot for an
+#' observer looking from the shore towards the water. The `x` coordinate is the
+#' offset along the shore (from left to right) while the `y` coordinate is the
+#' offset from the shore while moving towards the water (See Borcard &
 #' Legendre, 1994, Fig. 1 for details on the sampling area).
 #' 
 #' @source Daniel Borcard, Département de sciences biologiques, Université de
@@ -99,3 +99,4 @@
 #' 
 #' @keywords mite
 NULL
+#' 

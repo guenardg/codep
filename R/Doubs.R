@@ -1,6 +1,6 @@
 ## **************************************************************************
 ##
-##    (c) 2018-2021 Guillaume Guénard
+##    (c) 2018-2022 Guillaume Guénard
 ##        Department de sciences biologiques,
 ##        Université de Montréal
 ##        Montreal, QC, Canada
@@ -45,22 +45,22 @@
 #' \item{Doubs.geo}{ Geographic information of the samples. }
 #' }
 #' 
-#' @details Values in \code{Doubs.fish} are counts of individuals of each of 27
+#' @details Values in `Doubs.fish` are counts of individuals of each of 27
 #' species observed in a set of 30 sites located along the 453 km long Doubs
 #' River, France (see Verneaux 1973 for further details about fishing methods
 #' and effort).
-#' 
-#' \code{Doubs.env} contains 11 quantitative variables, namely the slope
-#' (\code{slo} 1/1000) and mean minimum discharge (\code{flo} m³/s) of the
-#' river, the pH of the water, its harness (Calcium concentration; \code{har};
-#' mg/L), phosphate (\code{pho}; mg/L), nitrate (\code{nit}; mg/L), and ammonium
-#' (\code{amm}; mg/L), concentration as well as its dissolved oxygen
-#' (\code{oxy}; mg/L) and biological oxygen demand (\code{bdo}; mg/L).
-#' 
-#' \code{Doubs.geo} contains geographical information. \code{Lon}, the longitude
-#' and \code{Lat}, the latitude of the sample (degree) as well as \code{DFS},
-#' its distance from the source of the river (km) and \code{Alt}, altitude (m
-#' above see level).
+#' \describe{
+#'   \item{Doubs.env}{ contains 11 quantitative variables, namely the slope
+#'   (`slo`; 1/1000) and mean minimum discharge (`flo` m³/s) of the river, the
+#'   pH of the water, its harness (Calcium concentration; `har`; mg/L),
+#'   phosphate (`pho`; mg/L), nitrate (`nit`; mg/L), and ammonium (`amm`; mg/L),
+#'   concentration as well as its dissolved oxygen (`oxy`; mg/L) and biological
+#'   oxygen demand (`bdo`; mg/L).}
+#' \item{Doubs.geo}{ contains geographical information. `Lon`, the longitude and
+#'   `Lat`, the latitude of the sample (degree) as well as `DFS`, its distance
+#'   from the source of the river (km) and `Alt`, altitude (m above see
+#'   level). }
+#' }
 #' 
 #' @source Verneaux, 1973
 #' 
@@ -86,3 +86,4 @@
 #' 
 #' @keywords Doubs
 NULL
+#' 

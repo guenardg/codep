@@ -1,6 +1,6 @@
 ## **************************************************************************
 ##
-##    (c) 2018-2021 Guillaume Guénard
+##    (c) 2018-2022 Guillaume Guénard
 ##        Department de sciences biologiques,
 ##        Université de Montréal
 ##        Montreal, QC, Canada
@@ -34,35 +34,36 @@
 #' 
 #' @param x A set of coordinates in the form of a \code{\link{matrix}} or
 #' \code{\link{data.frame}}.
-#' @param y An optional second set of coordinates in the same forms as \code{x}.
+#' @param y An optional second set of coordinates in the same dimensions as
+#' argument \code{x}.
 #' @param squared Should the squared Euclidean distances be returned (default:
 #' FALSE).
 #' 
-#' @return A \code{\link{dist}-class} object or, whenever \code{y} is provided,
-#' a \code{\link{matrix}} with as many rows as their are rows in \code{x} and as
-#' many columns as there are rows in \code{y}.
+#' @return A `\link{dist}-class` object or, whenever \code{y} is provided,
+#' a \code{\link{matrix}} with as many rows as the number of rows in \code{x}
+#' and as many columns as the number of rows in \code{y}.
 #' 
-#' @details When only one set of coordinates is given to the function (ie. when
-#' \code{y} is omitted), the function returns the pairwise distances in the form
-#' of a \code{\link{dist}-class} object representing a lower-triangle matrix. If
-#' weights are omitted, the result is identical to that produced by
-#' \code{\link{dist}} with argument \code{method = "euclidean"} (the function's
-#' default). When weights are provided, the weighted Euclidean distance is
-#' calculated.
+#' @details When only one set of coordinates is given to the function (i.e.,
+#' when argument \code{y} is omitted), the function returns the pairwise
+#' distances in the form of a `\link{dist}-class` object representing a
+#' lower-triangle matrix. If weights are omitted, the result is identical to
+#' that produced by function \link{dist} with argument
+#' \code{method = "euclidean"} (the function's default). When weights are
+#' provided, the weighted Euclidean distance is calculated.
 #' 
-#' The standard \code{R} function used to calculate the Euclidean distance
+#' The standard `R` function used to calculate the Euclidean distance
 #' (\code{\link{dist}}), only allows one to calculate pairwise distances between
 #' the rows of a single matrix of Cartesian coordinates and return a
-#' \code{\link{dist}}-class object, which is a one-dimensional array meant to be
+#' `\link{dist}-class` object, which is a one-dimensional array meant to be
 #' interpreted as a lower-triangular matrix. In addition to allowing one to
 #' calculate weighted Euclidean distances, function \code{Euclid} can also be
-#' provided two data matrices (\code{x} and \code{y}) and output a rectangular
-#' matrix of the Euclidean distances between their rows.
+#' provided two data matrices (arguments \code{x} and \code{y}) and output a
+#' rectangular matrix of the Euclidean distances.
 #' 
 #' @author \packageAuthor{codep}
 #' Maintainer: \packageMaintainer{codep}
 #' 
-#' @seealso The \code{\link{dist}-class} and associated methods.
+#' @seealso The `\link{dist}-class` and associated methods.
 #' 
 #' @importFrom stats dist
 #' 
@@ -89,7 +90,7 @@
 #' @useDynLib codep, .registration = TRUE
 #' 
 #' @export
-Euclid <- function(x, y, squared=FALSE) {
+Euclid <- function(x, y, squared = FALSE) {
   m <- NCOL(x)
   if (!is.matrix(x))
     x <- as.matrix(x)

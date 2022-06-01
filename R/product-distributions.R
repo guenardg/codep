@@ -1,6 +1,6 @@
 ## **************************************************************************
 ##
-##    (c) 2018-2021 Guillaume Guénard
+##    (c) 2018-2022 Guillaume Guénard
 ##        Department de sciences biologiques,
 ##        Université de Montréal
 ##        Montreal, QC, Canada
@@ -45,9 +45,9 @@
 #' \code{pphi} and \code{ptau} return the distribution functions.
 #' 
 #' @details The density distribution of a variable \code{z} that is the product
-#' of two random variables \code{x} and \code{y} with density distributions f(x)
-#' and g(y), respectively, is the integral over the intersection of the domains
-#' of \code{x} and \code{y} of f(x) * g(z/x) / abs(x) dx.
+#' of two random variables `x` and `y` with density distributions f(x) and g(y),
+#' respectively, is the integral f(x) * g(z/x) / abs(x) dx over the intersection
+#' of the domains of `x` and `y`.
 #' 
 #' \code{dphi} estimates density values using numerical integration
 #' (\code{\link{integrate}}) the Fisher-Scedecor \code{\link{df}} density
@@ -56,16 +56,16 @@
 #' has 'df1 = 1' and 'df2 = nu2' degrees of freedom. Hence, that product
 #' distribution has two parameters.
 #' 
-#' \code{pphi} integrates \code{dphi} in the interval [\code{0},\code{q}] when
-#' 'lower.tail = TRUE' (the default) and on the interval [\code{q},\code{Inf}]
-#' when 'lower.tail = FALSE'.
+#' \code{pphi} integrates \code{dphi} in the interval [0,q] when
+#' \code{lower.tail = TRUE} (the default) and on the interval [q,\code{Inf}]
+#' when \code{lower.tail = FALSE}.
 #' 
-#' \code{dtau} and \code{ptau} are similar to \code{dphi} integrates
-#' \code{pphi}, but with f(x) and f(y) being two Student's t distribution with
-#' \code{nu} degrees of freedom. \code{} It is called by functions
-#' \code{\link{test.cdp}} and \code{\link{permute.cdp}} to perform hypothesis
-#' tests for single response variables, in which case unilateral tests can be
-#' performed.
+#' \code{dtau} and \code{ptau} are similar to \code{dphi} and \code{pphi},
+#' respectively. \code{pphi} integrates \code{dphi}, with f(x) and f(y) being
+#' two Student's t distribution with \code{nu} degrees of freedom. It is called
+#' by functions \code{\link{test.cdp}} and \code{\link{permute.cdp}} to perform
+#' hypothesis tests for single response variables, in which case unilateral
+#' tests can be performed.
 #' 
 #' @author \packageAuthor{codep}
 #' Maintainer: \packageMaintainer{codep}
@@ -95,8 +95,7 @@
 #' lines(y = dphi(x, 12, 23), x = x, col = "green")
 #' lines(y = dphi(x, 35, 140), x = x, col = "red")
 #' 
-#' ### Displays the density distribution function for 10 degrees of freedom
-#' ### and the cumulative probability above x = 1.
+#' ### Displays the density distribution function for 10 degrees of freedom.
 #' x <- 10^seq(-4, 0.5, 0.05)
 #' y <- dphi(x, 5, 70)
 #' plot(y = y, x = x, type = "l", col = "black", las = 1, ylab = "Density",

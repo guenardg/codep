@@ -1,6 +1,6 @@
 ## **************************************************************************
 ##
-##    (c) 2018-2021 Guillaume Guénard
+##    (c) 2018-2022 Guillaume Guénard
 ##        Department de sciences biologiques,
 ##        Université de Montréal
 ##        Montreal, QC, Canada
@@ -31,13 +31,13 @@
 #' Class, Functions, and methods to perform Multiscale Codependence Analysis
 #' (MCA)
 #' 
-#' @name mca
+#' @name MCA
 #' 
 #' @param Y A numeric matrix or vector containing the response variable(s).
 #' @param X A numeric matrix or vector containing the explanatory variable(s).
-#' @param emobj A \code{\link{eigenmap-class}} object.
-#' @param object A \code{\link{cdp-class}} object.
-#' @param alpha The type I (\eqn{\alpha}{alpha}) error threshold used by the
+#' @param emobj A \link{eigenmap-class} object.
+#' @param object A \link{cdp-class} object.
+#' @param alpha The type I (alpha) error threshold used by the
 #' testing procedure.
 #' @param max.step The maximum number of steps to perform when testing for
 #' statistical significance.
@@ -50,29 +50,33 @@
 #' @param seeds Seeds for computation nodes' random number generators when using
 #' parallel computation during the permutation test.
 #' @param verbose Whether to return user notifications.
-#' @param ... Parameters to be passed to \code{parallel::makeCluster()}
+#' @param ... Parameters to be passed to function \code{parallel::makeCluster}
 #' 
 #' @details Multiscale Codependence Analysis (MCA) allows to calculate
 #' correlation-like (i.e.codependence) coefficients between two variables with
 #' respect to structuring variables (Moran's eigenvector maps). The purpose of
-#' this function is limited to parameter fitting. Test procedures are handled
-#' through \code{test.cdp} (parametric testing) or \code{permute.cdp}
-#' (permutation testing). Additionaly, methods are provided for printing,
-#' displaying the testing summary, plotting results, calculating fitted and
-#' residuals values, and making predictions. It is noteworthy that the test
-#' procedure used by \code{MCA} deviates from the standard R workflow since
-#' intermediate testing functions (\code{test.cdp} and \code{permute.cdp}) need
-#' first to be called before any testing be performed. For \code{MCA}, testing
-#' functionalities had been moved away from summary.cdp because testing is
-#' computationally intensive. Function \code{parPermute.cdp} allows the user to
-#' spread the number of permutation on many computation nodes. It relies on
-#' package \code{parallel}. Omitting parameter \code{nnode} lets function
-#' \code{parallel::detectCores()} specify the number of node. Similarly,
-#' omitting parameter \code{seeds} lets the draw seeds uniformly between
-#' \code{±.Machine$integer.max}. If needed, one may pass initialization
-#' parameters to \code{parallel::makeCluster()}.
+#' this function is limited to parameter fitting.
 #' 
-#' @returns A \code{\link{cdp-class}} object.
+#' Test procedures are handled through \code{test.cdp} (parametric testing) or
+#' \code{permute.cdp} (permutation testing). Moreover, methods are provided for
+#' printing (\code{print.cdp}), displaying a summary of the tests
+#' (\code{summary.cdp}), plotting results (\code{plot.cdp}), calculating
+#' fitted (\code{fitted.cdp}) and residuals values (\code{redisuals.cdp}), and
+#' making predictions (\code{predict.cdp}).
+#' 
+#' It is noteworthy that the test procedure used by \code{MCA} deviates from the
+#' standard R workflow since intermediate testing functions (\code{test.cdp} and
+#' \code{permute.cdp}) need first to be called before any testing be performed.
+#' 
+#' Function \code{parPermute.cdp} allows the user to spread the number of
+#' permutation on many computation nodes. It relies on package parallel.
+#' Omitting argument \code{nnode} lets function \code{parallel::detectCores}
+#' specify the number of node. Similarly, omitting parameter \code{seeds} lets
+#' the function define the seeds as a set of values drawn from a uniform random
+#' distribution between with minimum value \code{-.Machine$integer.max} and
+#' maximum value \code{.Machine$integer.max}.
+#' 
+#' @returns A \link{cdp-class} object.
 #' 
 #' @references
 #' Guénard, G., Legendre, P., Boisclair, D., and Bilodeau, M. 2010. Multiscale
@@ -90,14 +94,16 @@
 #' data(salmon)
 #' 
 #' ## Converting the data from data frames to to matrices:
-#' Abundance <- log1p(as.matrix(salmon[,"Abundance",drop=FALSE]))
+#' Abundance <- log1p(as.matrix(salmon[,"Abundance",drop = FALSE]))
 #' Environ <- as.matrix(salmon[,3L:5])
 #' 
 #' ## Creating a spatial eigenvector map:
-#' map1 <- eigenmap(x=salmon[,"Position"],weighting=wf.binary,boundaries=c(0,20))
+#' map1 <- eigenmap(x = salmon[,"Position"], weighting = wf.binary,
+#'                  boundaries = c(0,20))
 #' 
 #' ## Case of a single descriptor:
-#' mca1 <- MCA(Y=Abundance,X=Environ[,"Substrate",drop=FALSE],emobj=map1)
+#' mca1 <- MCA(Y = Abundance, X = Environ[,"Substrate",drop = FALSE],
+#'             emobj = map1)
 #' mca1
 #' mca1_partest <- test.cdp(mca1)
 #' mca1_partest
@@ -107,7 +113,7 @@
 #' mca1_pertest <- permute.cdp(mca1)
 #' \dontrun{
 #' ## or:
-#' mca1_pertest <- parPermute.cdp(mca1,permute=999999)
+#' mca1_pertest <- parPermute.cdp(mca1, permute = 999999)
 #' }
 #' mca1_pertest
 #' summary(mca1_pertest)
@@ -115,8 +121,8 @@
 #' mca1_pertest$UpYXcb$C # Array containing the codependence coefficients
 #' 
 #' ## With all descriptors at once:
-#' mca2 <- MCA(Y=log1p(as.matrix(salmon[,"Abundance",drop=FALSE])),
-#'             X=as.matrix(salmon[,3L:5]),emobj=map1)
+#' mca2 <- MCA(Y = log1p(as.matrix(salmon[,"Abundance",drop = FALSE])),
+#'             X = as.matrix(salmon[,3L:5]), emobj = map1)
 #' mca2
 #' mca2_partest <- test.cdp(mca2)
 #' mca2_partest
@@ -126,7 +132,7 @@
 #' mca2_pertest <- permute.cdp(mca2)
 #' \dontrun{
 #' ## or:
-#'     mca2_pertest <- parPermute.cdp(mca2,permute=999999)
+#'     mca2_pertest <- parPermute.cdp(mca2, permute = 999999)
 #' }
 #' mca2_pertest
 #' summary(mca2_pertest)
@@ -139,14 +145,14 @@
 #' data(Doubs)
 #' 
 #' ## Creating a spatial eigenvector map:
-#' map2 <- eigenmap(x=Doubs.geo[,"DFS"])
+#' map2 <- eigenmap(x = Doubs.geo[,"DFS"])
 #' 
-#' mca3 <- MCA(Y=log1p(Doubs.fish),X=Doubs.env,emobj=map2)
+#' mca3 <- MCA(Y = log1p(Doubs.fish), X=Doubs.env, emobj = map2)
 #' mca3
 #' mca3_pertest <- permute.cdp(mca3)
 #' \dontrun{
 #'   ## or:
-#'   mca3_pertest <- parPermute.cdp(mca3,permute=999999)
+#'   mca3_pertest <- parPermute.cdp(mca3, permute = 999999)
 #' }
 #' mca3_pertest
 #' summary(mca3_pertest)
@@ -157,7 +163,7 @@
 #' ## Display the results along the transect
 #' spmeans <- colMeans(log1p(Doubs.fish))
 #' pca1 <- svd(log1p(Doubs.fish) - rep(spmeans,each=nrow(Doubs.fish)))
-#' par(mar = c(5,5,2,5)+0.1)
+#' par(mar = c(5,5,2,5) + 0.1)
 #' plot(y = pca1$u[,1L], x = Doubs.geo[,"DFS"], pch = 21L, bg = "red",
 #'      ylab = "PCA1 loadings", xlab = "Distance from river source (km)")
 #' 
@@ -169,7 +175,7 @@
 #' ## Calculating predictions for arbitrary sites under the same set of
 #' ## environmental conditions that the codependence model was built with.
 #' prd1 <- predict(mca3_pertest,
-#'                 newdata=list(target = eigenmap.score(map2, newdists)))
+#'                 newdata = list(target = eigenmap.score(map2, newdists)))
 #' 
 #' ## Projection of the predicted species abundance on pca1:
 #' Uprd1 <-
@@ -183,14 +189,19 @@
 #' lines(y = Uprd1[,2L], x = x, col=2, lty = 1)
 #' 
 #' ## Displaying only the observed and predicted abundance for Brown Trout.
-#' par(new=TRUE)
-#' plot(y = log1p(Doubs.fish[,"TRU"]),Doubs.geo[,"DFS"],pch=21L,bg="green",
-#'      ylab="",xlab="",new=FALSE,axes=FALSE)
+#' par(new = TRUE)
+#' plot(y = log1p(Doubs.fish[,"TRU"]), Doubs.geo[,"DFS"], pch = 21L,
+#'     bg = "green", ylab = "", xlab = "", new = FALSE, axes = FALSE)
 #' axis(4)
-#' lines(y = prd1[,"TRU"], x = x, col=3)
-#' mtext(side=4, "log(Abundance+1)", line = 2.5)
+#' lines(y = prd1[,"TRU"], x = x, col = 3)
+#' mtext(side = 4, "log(Abundance+1)", line = 2.5)
 #' 
 #' ### Example 3: Borcard et al. Oribatid Mite
+#' 
+#' ## Testing the ("2-D) spatial codependence between the Oribatid Mite
+#' ## community structure and environmental variables, while displaying the
+#' ## total effects of the significant variables on the community structure
+#' ## (i.e., its first principal component).
 #' 
 #' data(mite)
 #' 
@@ -213,7 +224,7 @@
 #'                      (mite.geo[,"y"] - grid[i,"y"])^2)^0.5
 #' }
 #' 
-#' spmeans <- colMeans(mite.species)
+#' spmeans <- colMeans(log1p(mite.species))
 #' pca2 <- svd(log1p(mite.species) - rep(spmeans, each = nrow(mite.species)))
 #' 
 #' prd2 <- predict(mca4_partest,
@@ -222,10 +233,12 @@
 #' (prd2 - rep(spmeans, each = nrow(prd2))) %*%
 #' pca2$v %*% diag(pca2$d^-1)
 #' 
-#' ## Printing the response variable
+#' ## Printing the response variable (first principal component of the mite
+#' ## community structure).
 #' prmat <- Uprd2[,1L]
-#' dim(prmat) <- c(length(rng$x),length(rng$y))
-#' zlim <- c(min(min(prmat),min(pca2$u[,1L])),max(max(prmat),max(pca2$u[,1L])))
+#' dim(prmat) <- c(length(rng$x), length(rng$y))
+#' zlim <- c(min(min(prmat), min(pca2$u[,1L])), max(max(prmat),
+#'           max(pca2$u[,1L])))
 #' image(z = prmat, x = rng$x, y = rng$y, asp = 1, zlim = zlim,
 #'       col = rainbow(1200L)[1L:1000], ylab = "y", xlab = "x")
 #' points(
@@ -236,7 +249,7 @@
 #' 
 NULL
 #' 
-#' @describeIn mca
+#' @describeIn MCA
 #' 
 #' Main function to compute the multiscale codependence analysis
 #' 
@@ -319,7 +332,7 @@ MCA <- function(Y, X, emobj) {
   )
 }
 #' 
-#' @describeIn mca
+#' @describeIn MCA
 #' 
 #' Parametric statistical testing for multiscale codependence analysis
 #' 
@@ -437,7 +450,7 @@ test.cdp <- function(object, alpha = 0.05, max.step, response.tests = TRUE) {
   )
 }
 #' 
-#' @describeIn mca
+#' @describeIn MCA
 #' 
 #' Permutation testing for multiscale codependence analysis.
 #' 
@@ -629,7 +642,7 @@ permute.cdp <- function(object, permute, alpha = 0.05, max.step,
   )
 }
 #' 
-#' @describeIn mca
+#' @describeIn MCA
 #' 
 #' Permutation testing for multiscale codependence analysis using parallel
 #' processing.

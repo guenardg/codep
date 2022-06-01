@@ -26,7 +26,7 @@ wf.Drayf2(d, boundaries, wpar = 1)
 wf.Drayf3(d, boundaries, wpar = 1)
 }
 \arguments{
-\item{d}{A triangular (\code{\link{dist}}-class) or rectangular geographic
+\item{d}{A triangular (`\link{dist}-class`) or rectangular geographic
 distance matrix produced by \code{\link{dist}}, \code{\link{Euclid}}, or
 \code{\link{geodesics}}.}
 
@@ -38,9 +38,9 @@ the lower and upper threshold values used to obtain the connectivity matrix.
 (see details).}
 }
 \value{
-A \code{\link{dist}-class} object when argument \code{d} is a
-\code{\link{dist}-class} object or a rectangular matrix when argument
-\code{d} is a rectangular matrix, either one with the weights as its values.
+A `\link{dist}-class` object when argument \code{d} is a
+`\link{dist}-class` object or a rectangular matrix when argument \code{d} is
+a rectangular matrix, either one with the weights as its values.
 }
 \description{
 A set of common distance weighting functions to calculate spatial eignevector
@@ -50,8 +50,8 @@ maps using function \code{\link{eigenmap}}.
 These functions are meant primarily to be called within functions
 \code{\link{eigenmap}} and \code{\link{eigenmap.score}}. In
 \code{\link{eigenmap}}, argument \code{d} is a lower-triangular
-\code{\link{dist}}-class object and the resulting lower-triangular weight
-matrix is used in calculating the spatial eigenvector map. In
+`\link{dist}-class` object and the resulting lower-triangular weight matrix
+is used in calculating the spatial eigenvector map. In
 \code{\link{eigenmap.score}}, \code{d} is a rectangular matrix of the
 distances between a set of arbitrary locations (rows) and reference locations
 (columns; the locations for which the the spatial eigenvector map has been
@@ -59,23 +59,28 @@ built and the resulting rectangular weight matrix is used to calculate
 spatial eigenfunction values. These values allow one to use the spatial
 information of a data set for making predictions at arbitrary values.
 
-\code{Wf.sqrd} (default value) consists in taking
-\eqn{w_{i,j} = -0.5*d_{i,j}} and does not involve any trunction.
+`Wf.sqrd` (default value) consists in taking
+\emph{w_{i,j} = -0.5*d_{i,j}} and does not involve any truncation.
 
-\code{Wf.RBF} consists in taking \eqn{w_{i,j} = exp(-wpar*d_{i,j}^2)} and
-does not involve any trunction.
+`Wf.RBF` consists in taking \emph{w_{i,j} = exp(-wpar*d_{i,j}^2)} and
+does not involve any truncation, where \emph{wpar} is a non-zero real
+positive value (default: 1).
 
-\code{Wf.binary} the spatial weighting matrix is simply the connectivity
-matrix,
+`Wf.binary` the spatial weighting matrix is simply the connectivity
+matrix.
 
-\code{Wf.PCNM} is \eqn{a_{i,j} = 1 - (d_{i,j} / (wpar*boundaries_2))^2}
+`Wf.PCNM` is \emph{a_{i,j} = 1 - (d_{i,j} / (wpar*boundaries_2))^2},
+where \emph{wpar} is a non-zero real positive value (default: 4).
  
-\code{Wf.Drayf1} is \eqn{a_{i,j} = 1 - (d_{i,j} / d_{max})} where \eqn{d_max}
-is the distance between the two most distant locations in the set,
+`Wf.Drayf1` is \emph{a_{i,j} = 1 - (d_{i,j} / d_{max})} where
+\emph{d_max} is the distance between the two most distant locations in the
+set.
 
-\code{Wf.Drayf2} is \eqn{a_{i,j} = 1 - (d_{i,j} / d_{max})^{wpar}},
+`Wf.Drayf2` is \emph{a_{i,j} = 1 - (d_{i,j} / d_{max})^{wpar}}, where
+\emph{wpar} is a non-zero real positive value (default: 1).
 
-\code{Wf.Drayf3} is \eqn{a_{i,j} = 1 / d_{i,j}^{wpar}}.
+`Wf.Drayf3` is \emph{a_{i,j} = 1 / d_{i,j}^{wpar}}, where \emph{wpar} is a
+non-zero real positive value (default: 1).
 
 Functions \code{Wf.Drayf1}, \code{Wf.Drayf2}, and \code{Wf.Drayf3} were
 proposed by Dray et al. (2006) and function \code{PCNM} was proposed by
@@ -85,24 +90,28 @@ The \code{Wf.sqrd} weighting approach is equivalent to submitting the
 elementwise square-root of the distance matrix to a principal coordinate
 analysis. It was proposed by Diniz-Filho et al. (2013) and is equivalent, for
 evenly spaced transect or surfaces (square or rectangle), to using the basis
-functions of type II discrete cosine basis transforms. However, this fact has
-not been reported by Diniz-Filho et al. (2013).
+functions of type II discrete cosine basis transforms; a fact that has gone
+unnoticed by Diniz-Filho et al. (2013).
+
+The radial basis function (RBF) is a widespread kernel method involving sets
+of real-valued functions whose values depend on the distance between any
+given input coordinate and a set of fixed points (a single fixed point for
+each function). It is implemented using function \code{Wf.RBF} using all the
+sampling points as the fixed points.
 
 When calculating the connectivity matrix, pairs of location whose distance to
 one another are between the boundary values (argument \code{bounraries}) are
-considered as neighbours (\eqn{b_{i,j}=1}) whereas values located below the
+considered as neighbours (\emph{b_{i,j}=1}) whereas values located below the
 minimum and above the maximum are considered as equivalent or distant,
-respectively (\eqn{b_{i,j}=0} in both cases).
+respectively (\emph{b_{i,j}=0} in both cases).
 
 User may implement custom weighting functions. These functions must at the
 very least have an argument \code{d}, and can be given arguments
 \code{boundaries} and \code{wpar}. Argument \code{wpar} may be a vector with
-any number of elements, but the function definition must be provided with
-default values. 
-
-User-provided weighting functions with a \code{wpar} argument must come with
-a valid default value for that parameter since \code{\link{eigenmap}} may
-internally call it without a formal value.
+any number of elements. They should be added to the R-code file
+(weighting-functions.R). User-provided weighting functions with an argument
+\code{wpar} must come with a valid default value for that parameter since
+\code{\link{eigenmap}} may internally call it without a formal value.
 }
 \section{Functions}{
 \itemize{

@@ -1,6 +1,6 @@
 ## **************************************************************************
 ##
-##    (c) 2018-2021 Guillaume Guénard
+##    (c) 2018-2022 Guillaume Guénard
 ##        Department de sciences biologiques,
 ##        Université de Montréal
 ##        Montreal, QC, Canada
@@ -34,28 +34,31 @@
 #' 
 #' @param x A set of geographic coordinates in the form of a two-column
 #' \code{\link{matrix}} or \code{\link{data.frame}}.
-#' @param y An optional second set of coordinates in the same forms as \code{x}.
+#' @param y An other two-column \code{\link{matrix}} or \code{\link{data.frame}}
+#' containing an optional second set of coordinates.
 #' @param method The calculation method used to obtain the distances (default:
 #' haversine method; see details).
-#' @param radius Radius of the planetary body (when assuming a sphere).
+#' @param radius Radius of the planetary body (when assuming a sphere; default:
+#' 6371000 m).
 #' @param sma Length of the semi-major axis of the planetary body (when assuming
-#' a revolution ellipsoid).
-#' @param flat Flattening of the ellipsoid.
+#' a revolution ellipsoid; default: 6378137 m).
+#' @param flat Flattening of the ellipsoid (default: 1/298.257223563).
 #' @param maxiter Maximum number of iterations, whenever iterative calculation
-#' is involved.
-#' @param tol Tolerance used when iterative calculation is involved.
+#' is involved (default: 1024).
+#' @param tol Tolerance used when iterative calculation is involved (default:
+#' \code{.Machine$double.eps^0.75}; a machine dependent value).
 #' 
-#' @return A \code{\link{dist}-class} object or, whenever \code{y} is provided,
-#' a \code{\link{matrix}} with as many rows as their are rows in \code{x} and as
-#' many columns as there are rows in \code{y}.
+#' @return A `\link{dist}-class` object or, whenever argument \code{y} is
+#' provided, a \code{\link{matrix}} with as many rows as the number of rows in
+#' argument \code{x} and as many columns as the number of rows in argument
+#' \code{y}.
 #' 
-#' @details When only one set of coordinates is given to the function (ie. when
-#' \code{y} is omitted), the function returns the pairwise distances in the form
-#' of a \code{\link{dist}-class} object representing a lower-triangle matrix.
-#' When the second coordinate set is given, the function calculates the
-#' distances between each coordinate of \code{x} and each coordinate of \code{y}
-#' and returns a matrix with one column for each coordinate in \code{x} and one
-#' row for each coordinate in \code{y}.
+#' @details When only one set of coordinates is given to the function (i.e.,
+#' when argument \code{y} is omitted), the function returns the pairwise
+#' distances in the form of a `\link{dist}-class` object representing a
+#' lower-triangle matrix. When the second coordinate set is given, the function
+#' calculates the distances between each coordinate of argument \code{x} and
+#' each coordinate of argument \code{y}.
 #' 
 #' Two calculation methods are implemented. The first is the haversine formula,
 #' which assume the planetary body to be a sphere. The radius of that sphere is
@@ -64,15 +67,16 @@
 #' haversine formula is fastest but its precision depend on how well the
 #' planetary body match the sphericity assumption. The second method implemented
 #' is Vincenty's inverse formula, which assumes the the planetary body is a
-#' revolution elipsoid, which is expected for rotating semi-fluid such as planet
-#' earth. Argument \code{sma}, the length of the semi-major axis, corresponds to
-#' the radius of the circle obtained when the revolution elipoid at the equator,
-#' whereas argument \code{flat} correspond to the compression of the sphere,
-#' along the diameter joining the poles, to form the ellipsoid of revolution.
-#' Their default values corresponds to parameters for planet Earth according to
-#' WGS84. These values, along with \code{maxiter} and \code{tol}, are ignored
-#' when using the haversine formula, as the value of argument \code{radius} is
-#' ignored when using Vincenty's inverse formula.
+#' revolution ellipsoid, which is expected for rotating semi-fluid such as
+#' planet earth. Argument \code{sma}, the length of the semi-major axis,
+#' corresponds to the radius of the circle obtained when the revolution
+#' ellipsoid at the equator, whereas argument \code{flat} correspond to the
+#' compression of the sphere, along the diameter joining the poles, to form the
+#' ellipsoid of revolution. Their default values corresponds to parameters for
+#' planet Earth according to WGS84. These values, along with arguments
+#' \code{maxiter} and \code{tol}, are ignored when using the haversine formula,
+#' whereas the value of argument \code{radius} is ignored when using Vincenty's
+#' inverse formula.
 #' 
 #' Vincenty's inverse formula is more precise on planet Earth (on the order of
 #' 0.5mm) than the haversine formula, but it involves more computation time and
@@ -84,7 +88,7 @@
 #' \code{maxiter} are indicative of failed convergence; a warning is issued in
 #' such a circumstance.
 #' 
-#' Geodesic distance matrices are nonmetric.
+#' Geodesic distance matrices are non metric.
 #' 
 #' @author \packageAuthor{codep}
 #' Maintainer: \packageMaintainer{codep}
@@ -107,7 +111,7 @@
 #'                 c(-135,22,0,1,-45,12,27,-139))
 #' res_hav <- geodesics(coords)  ## Default: the haversine formula
 #' res_hav
-#' res_vif <- geodesics(coords,method = "Vincenty")
+#' res_vif <- geodesics(coords, method = "Vincenty")
 #' res_vif
 #' attr(res_vif,"niter") ## The numbers of iterations
 #' res_vif-res_hav       ## Absolute difference
@@ -118,7 +122,7 @@
 #' coords <- cbind(c(45.01,44.82,45.23,44.74),
 #'                 c(72.03,72.34,71.89,72.45))
 #' res_hav <- geodesics(coords)
-#' res_vif <- geodesics(coords,method = "Vincenty")
+#' res_vif <- geodesics(coords, method = "Vincenty")
 #' res_vif-res_hav       ## Absolute difference
 #' 200*(res_vif-res_hav)/(res_vif+res_hav) ## Relative difference are smaller
 #' ##
@@ -126,9 +130,9 @@
 #' @useDynLib codep, .registration = TRUE
 #' 
 #' @export
-geodesics <- function(x, y, method=c("haversine","Vincenty"),
-                      radius=6.371e6, sma=6378137.0, flat=1/298.257223563,
-                      maxiter=1024L,tol=.Machine$double.eps^0.75) {
+geodesics <- function(x, y, method = c("haversine", "Vincenty"),
+                      radius = 6.371e6, sma = 6378137.0, flat = 1/298.257223563,
+                      maxiter = 1024L, tol = .Machine$double.eps^0.75) {
   if (NCOL(x)!=2L)
     stop("'x' must be Lat Lon geodesic coordinates!")
   if (!is.matrix(x))
@@ -195,3 +199,4 @@ geodesics <- function(x, y, method=c("haversine","Vincenty"),
     )
   return(out)
 }
+#' 

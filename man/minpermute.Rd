@@ -11,7 +11,7 @@ minpermute(alpha, nbtest, margin = 1, ru = 3)
 analysis.}
 
 \item{nbtest}{The number of test performed (the number of eigenvectors in the
-\sQuote{mem} object in the case of \code{\link{MCA}}).}
+`mem` object in the case of \code{\link{MCA}}).}
 
 \item{margin}{A margin allowed for the number of permutation. Default value:
 1.}
@@ -29,9 +29,9 @@ Codependence Analysis.
 }
 \details{
 This function calculate the number of permutations for use with
-\code{\link{permute.cdp}}. Parameter \code{margin} allows to apply a safe
+\code{\link{permute.cdp}}. Argument \code{margin} allows to apply a safe
 margin to the number of permutations. The minimal suitable value for this
-parameter is 1. Parameter \code{ru} allows one to round-up the number of
+parameter is 1. Argument \code{ru} allows one to round-up the number of
 permutations. A value of 0 implies no round-up, a value of 1 a round-up to
 the next ten, 2 a round-up to the next hundred, and so on. Function
 \code{\link{minpermute}} is called internally by \code{\link{permute.cdp}} in

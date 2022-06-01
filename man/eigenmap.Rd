@@ -27,38 +27,39 @@ provided as x. Used for plotting purposes.}
 \item{weighting}{The function to obtain the edge weighting matrix (see
 details).}
 
-\item{boundaries}{When required by \code{weighting}, a two-element numeric
-vector containing the lower and upper threshold values used to obtain the
-connectivity matrix (see \code{\link{weighting-functions}}).}
+\item{boundaries}{When required by argument \code{weighting}, a two-element
+numeric vector containing the lower and upper threshold values used to obtain
+the connectivity matrix (see \link{weighting-functions}).}
 
-\item{wpar}{Shape parameter for \code{weignting} (optional).}
+\item{wpar}{Shape parameter for argument \code{weignting} (optional).}
 
 \item{tol}{The smallest absolute eigenvalue for a spatial eigenfunctions to
 be considered as a suitable predictor. Default:
 \code{.Machine$double.eps^0.5} (a machine-dependent value).}
 
-\item{emap}{An \code{\link{eigenmap-class}} object.}
+\item{emap}{An \link{eigenmap-class} object.}
 
-\item{target}{A matrix of the distances between the locations passed to
-\code{\link{eigenmap}} and target locations where scores are to be calculated
-(possibly for making spatially-explicit predictions).}
+\item{target}{A (generally rectangular) distance matrix between a set of
+target locations for which spatially-explicit predictions are being made
+(rows), and the reference locations given to function \code{eigenmap}
+(columns). See example 2.}
 }
 \description{
 Function to calculate spatial eigenvector maps of a set of locations
 in a space with an arbitrary number of dimension.
 }
 \details{
-When \code{eigenmap} is given coordinates as its argument \code{x},
-they are treated as Cartesian coordinates and the distances between them are
-assumed to be Euclidean. Otherwise (e.g., when geodesic distances are used),
-distances have to be provided as the argument \code{x} and plotting
-coordinates have to be supplied as argument \code{alt.coord}.
+When function \code{eigenmap} is given coordinates as its argument
+\code{x}, they are treated as Cartesian coordinates and the distances between
+them are assumed to be Euclidean. Otherwise (e.g., when geodesic distances
+are used), distances have to be provided as the argument \code{x} and
+plotting coordinates have to be supplied as argument \code{alt.coord}.
 
-The weighting function (see \code{\link{weighting-functions}}) must have the
-distances as its first parameter, optionally a parameter named
-\code{boundaries} giving the boundaries of the within which locations are
-regarded as neighbours and/or a parameter named \code{wpar} containing any
-other weighting function parameters.
+The weighting function (see \link{weighting-functions}) must have the
+distances as its first argument, optionally an argument named
+\code{boundaries} giving the boundaries within which locations are regarded
+as neighbours and/or an argument \code{wpar} containing any other weighting
+function parameters.
 
 Default values for argument \code{boundaries} are 0 for the minimum value and
 \code{NA} for the maximum. For weighting functions with an argument
@@ -80,93 +81,101 @@ eigenvector map.
 ### Example 1: A linear transect.
 data(salmon)
 
-## No boundaries provided for a function that requires them: a warning is
-## issued
-map <- eigenmap(x=salmon[,"Position"], weighting=wf.binary)
+## A warning is issued when no boundaries are provided for a function that
+## requires them.
+## Example:
+map <- eigenmap(x = salmon[,"Position"], weighting = wf.binary)
 map
 ## plot(map)
 
-## The function issues no warning when boundaries are provided
-map <- eigenmap(x=salmon[,"Position"], weighting=wf.binary,
-                boundaries=c(0,20))
+## In the following examples, boundaries are provided; they are needed by the
+## functions.
+map <- eigenmap(x = salmon[,"Position"], weighting = wf.binary,
+                boundaries = c(0,20))
 map
 ## plot(map)
 
-map <- eigenmap(x=salmon[,"Position"], weighting=wf.Drayf1,
-                boundaries=c(0,20))
+map <- eigenmap(x = salmon[,"Position"], weighting = wf.Drayf1,
+                boundaries = c(0,20))
 map
 ## plot(map)
 
-map <- eigenmap(x=salmon[,"Position"], weighting=wf.Drayf2,
-                boundaries=c(0,20))
+map <- eigenmap(x = salmon[,"Position"], weighting = wf.Drayf2,
+                boundaries = c(0,20))
 map
 ## plot(map)
 
-map <- eigenmap(x=salmon[,"Position"], weighting=wf.Drayf3,
-                boundaries=c(0,20), wpar=2)
+map <- eigenmap(x = salmon[,"Position"], weighting = wf.Drayf3,
+                boundaries = c(0,20), wpar = 2)
 map
 ## plot(map)
 
-map <- eigenmap(x=salmon[,"Position"], weighting=wf.PCNM, boundaries=c(0,20))
+map <- eigenmap(x = salmon[,"Position"], weighting = wf.PCNM,
+                boundaries = c(0,20))
 map
 ## plot(map)
 
-map <- eigenmap(x=salmon[,"Position"], weighting=wf.sqrd)
+map <- eigenmap(x = salmon[,"Position"], weighting = wf.sqrd)
 map
 ## plot(map)
 
-map <- eigenmap(x=salmon[,"Position"], weighting=wf.RBF, wpar=0.001)
+map <- eigenmap(x = salmon[,"Position"], weighting = wf.RBF, wpar = 0.001)
 map
 ## plot(map)
 
 ### Example 2: Using predictor scores
 
 smpl <- c(4,7,10,14,34,56,61,64)  # A sample to be discarded
-map <- eigenmap(x=salmon[-smpl,"Position"], weighting=wf.sqrd)
+map <- eigenmap(x = salmon[-smpl,"Position"], weighting = wf.sqrd)
 scr <- eigenmap.score(
-         map, target=as.matrix(dist(salmon[,"Position"]))[,-smpl]
+         map, target = as.matrix(dist(salmon[,"Position"]))[,-smpl]
        )
 ## Scores of sampling points are the eigenvectors
 scr[smpl,]
 
 wh <- 5L   # You can try with other vectors.
-plot(map$U[,wh]~salmon[-smpl,"Position"], ylab=expression(U[5]),
-     xlab="Position along transect")
-points(y=scr[smpl,wh], x=salmon[smpl,"Position"], pch=21L, bg="black")
+plot(map$U[,wh] ~ salmon[-smpl,"Position"], ylab = expression(U[5]),
+     xlab = "Position along transect")
+points(y = scr[smpl,wh], x = salmon[smpl,"Position"], pch = 21L,
+       bg = "black")
 
-map <- eigenmap(x=salmon[-smpl,"Position"], weighting=wf.binary,
-                boundaries=c(0,20))
+map <- eigenmap(x = salmon[-smpl,"Position"], weighting = wf.binary,
+                boundaries = c(0,20))
 scr <- eigenmap.score(
-         map, target=as.matrix(dist(salmon[,"Position"]))[smpl,-smpl]
-       )
+         map, target = as.matrix(dist(salmon[,"Position"]))[smpl,-smpl])
 
+## Plot the 8 prediction sites along particular eigenvectors, here
+## eigenvector #1:
 wh <- 1L   # One could try the other vectors.
-plot(map$U[,wh]~salmon[-smpl,"Position"], ylab = expression(U[1L]),
+plot(map$U[,wh] ~ salmon[-smpl,"Position"], ylab = expression(U[1L]),
      xlab = "Position along transect (m)")
-points(y=scr[,wh], x=salmon[smpl,"Position"], pch=21L, bg="black")
+points(y = scr[,wh], x = salmon[smpl,"Position"], pch=21L, bg = "black")
 
-map <- eigenmap(x=salmon[-smpl,"Position"], weighting=wf.PCNM,
-                boundaries=c(0,100))
+map <- eigenmap(x = salmon[-smpl,"Position"], weighting = wf.PCNM,
+                boundaries = c(0,100))
 scr <- eigenmap.score(
-         map, target=as.matrix(dist(salmon[,"Position"]))[smpl,-smpl]
+         map, target = as.matrix(dist(salmon[,"Position"]))[smpl,-smpl]
        )
 
 wh <- 1L   # You can try with other vectors.
-plot(map$U[,wh]~salmon[-smpl,"Position"], ylab = expression(U[1]),
+plot(map$U[,wh] ~ salmon[-smpl,"Position"], ylab = expression(U[1]),
      xlab = "Position along transect (m)")
-points(y=scr[,wh], x=salmon[smpl,"Position"], pch=21L, bg="black")
+points(y = scr[,wh], x = salmon[smpl,"Position"], pch = 21L, bg = "black")
 
 ### Example 3: A unevenly sampled surface.
 
 data(mite)
-map <- eigenmap(x=as.matrix(mite.geo), weighting=wf.sqrd)
+
+## Example using the principal coordinates of the square root of the
+## (Euclidean) distances:
+map <- eigenmap(x = as.matrix(mite.geo), weighting = wf.sqrd)
 map
 ## plot(map)
 
-map <- eigenmap(x=as.matrix(mite.geo), weighting=wf.RBF)
+## Example using the radial basis functions (RBF):
+map <- eigenmap(x = as.matrix(mite.geo), weighting = wf.RBF)
 map
 ## plot(map)
-
 
 }
 \references{

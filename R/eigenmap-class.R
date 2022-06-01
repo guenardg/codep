@@ -35,16 +35,16 @@
 #' 
 #' @docType class
 #' 
-#' @param x an \code{eigenmap-class} object.
+#' @param x an `eigenmap-class` object.
 #' @param ... Further parameters to be passed to other functions or methods
 #' (currently ignored).
 #' 
 #' @details
-#' The \code{print} method provides the number of the number of orthonormal
+#' The `print` method provides the number of the number of orthonormal
 #' variables (i.e. basis functions), the number of observations these functions
 #' are spanning, and their associated eigenvalues.
 #' 
-#' The \code{plot} method provides a plot of the eigenvalues and offers the
+#' The `plot` method provides a plot of the eigenvalues and offers the
 #' possibility to plot the values of variables for 1- or 2-dimensional sets of
 #' coordinates. \code{plot.eigenmap} opens the default graphical device driver,
 #' i.e., \code{X11}, \code{windows}, or \code{quartz} and recurses through
@@ -52,7 +52,7 @@
 #' interrupts recursing on \code{X11} and \code{windows} (Mac OS X users should
 #' hit \emph{Esc} on the \code{quartz} graphical device driver (Mac OS X users).
 #' 
-#' @format \code{eigenmap-class} objects contain:
+#' @format `eigenmap-class` objects contain:
 #' \describe{
 #'   \item{coordinates}{ A matrix of coordinates. }
 #'   \item{truncate}{ The interval within which pairs of sites are considered as
@@ -83,6 +83,8 @@
 #' @seealso
 #' \code{\link{MCA}}
 #' \code{\link{eigenmap}}
+#' 
+#' @importFrom graphics plot
 #' 
 NULL
 #' 
@@ -185,4 +187,4 @@ plot.eigenmap <- function(x, ...) {
   }
   return(invisible(NULL))
 }
-##
+#' 

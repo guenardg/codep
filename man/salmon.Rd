@@ -20,13 +20,13 @@ Marguerite River, Québec, Canada.
 }
 \details{
 Contains (1) the 76 sampling site positions along a 1520 m river
-segment beginning at a location called \sQuote{Bardsville}
-(Lat: 48°23'01.59'' N ; Long: 70°12'10.05'' W), (2) the number of parr (young
-salmon, ages I+ and II+) observed at the sampling sites, (3) the mean water
-depths (m), (4) the mean current velocity (m/s), and (5) the mean substrate
-size (mm). Sampling took place on July 7, 2002, in the 76 sites, each 20 m
-long. The \sQuote{Bardsville} river segment is located in the upper portion
-of Sainte-Marguerite River, Quebec, Canada.
+segment beginning at a location called `Bardsville` (Lat: 48°23'01.59'' N ;
+Long: 70°12'10.05'' W), (2) the number of parr (young salmon, ages I+ and
+II+) observed at the sampling sites, (3) the mean water depths (m), (4) the
+mean current velocity (m/s), and (5) the mean substrate size (mm). Sampling
+took place on July 7, 2002, in the 76 sites, each 20 m long. The `Bardsville`
+river segment is located in the upper portion of Sainte-Marguerite River,
+Quebec, Canada.
 }
 \examples{
 data(salmon)

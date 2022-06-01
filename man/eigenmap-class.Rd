@@ -7,7 +7,7 @@
 \alias{plot.eigenmap}
 \title{Class and Methods for Spatial Eigenvector Maps}
 \format{
-\code{eigenmap-class} objects contain:
+`eigenmap-class` objects contain:
 \describe{
   \item{coordinates}{ A matrix of coordinates. }
   \item{truncate}{ The interval within which pairs of sites are considered as
@@ -26,7 +26,7 @@
 \method{plot}{eigenmap}(x, ...)
 }
 \arguments{
-\item{x}{an \code{eigenmap-class} object.}
+\item{x}{an `eigenmap-class` object.}
 
 \item{...}{Further parameters to be passed to other functions or methods
 (currently ignored).}
@@ -36,11 +36,11 @@ Create and handle spatial eigenvector maps of a set of locations a space with
 an arbitrary number of dimensions.
 }
 \details{
-The \code{print} method provides the number of the number of orthonormal
+The `print` method provides the number of the number of orthonormal
 variables (i.e. basis functions), the number of observations these functions
 are spanning, and their associated eigenvalues.
 
-The \code{plot} method provides a plot of the eigenvalues and offers the
+The `plot` method provides a plot of the eigenvalues and offers the
 possibility to plot the values of variables for 1- or 2-dimensional sets of
 coordinates. \code{plot.eigenmap} opens the default graphical device driver,
 i.e., \code{X11}, \code{windows}, or \code{quartz} and recurses through

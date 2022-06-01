@@ -1,6 +1,6 @@
 ## **************************************************************************
 ##
-##    (c) 2018-2021 Guillaume Guénard
+##    (c) 2018-2022 Guillaume Guénard
 ##        Department de sciences biologiques,
 ##        Université de Montréal
 ##        Montreal, QC, Canada
@@ -53,48 +53,46 @@
 #' @param ... Further parameters to be passed to other functions or methods.
 #' 
 #' @details
-#' The \code{fitted}, \code{residuals}, and \code{predict} methods return a
-#' matrix of fitted, residuals, or predicted values, respectively. The
-#' \code{fitted} and \code{predict} methods return a list a list when argument
-#' \code{component} is \code{TRUE}. The list contains the \code{fitted} or
-#' \code{predicted} values as a first element and an array \code{components} as
-#' a second. That 3-dimensional array has one matrix for each statistically
-#' significant codependence coefficient.
+#' The `fitted`, `residuals`, and `predict` methods return a matrix of fitted,
+#' residuals, or predicted values, respectively. The `fitted` and `predict`
+#' methods return a list a list when argument `component` is \code{TRUE}. The
+#' list contains the `fitted` or `predicted` values as a first element and an
+#' array `components` as a second. That 3-dimensional array has one matrix for
+#' each statistically significant codependence coefficient.
 #' 
-#' For making predictions, parameter \code{newdata} may contain three elements:
-#' \code{$X}, a matrix of new values of the explanatory variables,
-#' \code{$meanY}, a vector of the predicted mean values of the responses, and
-#' \code{$target}, a matrix of target scores for arbitrary locations within the
-#' study area. When no \code{$X} is supplied, the descriptor given to
-#' \code{\link{MCA}} is recycled, while when no \code{$meanY} is supplied, the
-#' mean values of the response variables given to \code{\link{MCA}} are used.
-#' Finally, when element \code{$target} is omitted from \code{newdata},
+#' For making predictions, argument \code{newdata} may contain three elements:
+#' `$X`, a matrix of new values of the explanatory variables, `$meanY`, a vector
+#' of the predicted mean values of the responses, and `$target`, a matrix of
+#' target scores for arbitrary locations within the study area. When no `$X` is
+#' supplied, the descriptor given to \code{\link{MCA}} is recycled, while when
+#' no `$meanY` is supplied, the mean values of the response variables given to
+#' \code{\link{MCA}} are used.
+#' 
+#' Finally, when element `$target` is omitted from argument \code{newdata},
 #' predictions are made at the sites were observations were done. When none of
 #' the above is provided, or if \code{newdata} is omitted when calling the
-#' prediction method, the behaviour of the \code{predict} method is identical to
-#' that of the \code{fitted} method.
+#' prediction method, the behaviour of the `predict` method is identical to
+#' that of the `fitted` method.
 #' 
-#' From version 0.7-1, \code{\link{cdp-class}} replaces the former class
-#' \code{mca} used by \code{\link{codep-package}} because the standard package
-#' \code{MASS} also had S3 methods for a class named \code{mca} that were
-#' overwritten by those of \code{\link{codep-package}}.
+#' From version 0.7-1, \link{cdp-class} replaces the former class
+#' \code{mca} used by \link{codep-package} because the standard package MASS
+#' also had S3 methods for a class named \code{mca} that were overwritten by
+#' those of \link{codep-package}.
 #' 
-#' @format \code{cdp-class} objects contain:
+#' @format cdp-class objects contain:
 #' \describe{
 #'   \item{data}{ A list with two elements: the first being a copy of the
-#'     response (\code{Y}) and the second being a copy of the explanatory
-#'     variables (\code{X}). This is the variables that were given to
+#'     response (`Y`) and the second being a copy of the explanatory variables
+#'     (`X`). This is the variables that were given to \code{\link{MCA}}. }
+#'   \item{emobj}{ The \link{eigenmap-class} object that was given to
 #'     \code{\link{MCA}}. }
-#'   \item{emobj}{ The \code{\link{eigenmap-class}} object that was given to
-#'     \code{\link{MCA}}. }
-#'   \item{UpYXcb}{ A list with five elements: the first (\code{UpY}) is a
-#'     matrix of the cross-products of structuring variable (\code{U}) and the
-#'     response variable \code{Y}, the second (\code{UpX}) is a matrix of the
-#'     cross-product of the structuring variable and the explanatory variables
-#'     (\code{X}), the third (\code{C}) is a 3-dimensional array of the
-#'     codependence coefficients, the fourth (\code{B}) is a 3-dimensional array
-#'     of the coregression coefficients, and the fifth (\code{CM}) is a matrix
-#'     of the multivariate codependence coefficients. }
+#'   \item{UpYXcb}{ A list with five elements: the first (`UpY`) is a matrix of
+#'     the cross-products of structuring variable (`U`) and the response
+#'     variable `Y`, the second (`UpX`) is a matrix of the cross-product of the
+#'     structuring variable and the explanatory variables (`X`), the third (`C`)
+#'     is a 3-dimensional array of the codependence coefficients, the fourth
+#'     (`B`) is a 3-dimensional array of the coregression coefficients, and the
+#'     fifth (`CM`) is a matrix of the multivariate codependence coefficients. }
 #'   \item{test}{ Results of statistical testing as performed by
 #'     \code{\link{test.cdp}} or \code{\link{permute.cdp}}. \code{NULL} if no
 #'     testing was performed, such as when only \code{\link{MCA}} had been
@@ -102,24 +100,23 @@
 #'     following members:
 #'     \describe{
 #'       \item{$permute}{ The number of randomized permutations used by
-#'         \code{permute.cdp} for permutation testing. \code{0} or \code{FALSE}
-#'         for parametric testing obtained using \code{\link{test.cdp}}. }
+#'         \code{permute.cdp} for permutation testing. 0 or \code{FALSE} for
+#'         parametric testing obtained using \code{\link{test.cdp}}. }
 #'       \item{$significant}{ The indices of codependence coefficient describing
-#'         statistically significant codependence between \code{Y} and \code{X},
-#'         in decreasing order of magnitude. }
-#'       \item{$global}{ The testing table (a 5-column matrix) with
-#'         \eqn{\phi}{phi} statistics, degrees-of-freedom, and testwise and
-#'         familywise probabilities of type I (\eqn{\alpha}{alpha}) error. It
-#'         contains one line for each statistically significant global
-#'         coefficient (if any) in addition to test results for the first,
-#'         non-significant coefficient, on which the testing procedure
-#'         stopped. }
+#'         statistically significant codependence between `Y` and `X`, in
+#'         decreasing order of magnitude. }
+#'       \item{$global}{ The testing table (a 5-column matrix) with phi
+#'         statistics, degrees-of-freedom, and testwise and familywise
+#'         probabilities of type I (alpha) error. It contains one line for each
+#'         statistically significant global coefficient (if any) in addition to
+#'         test results for the first, non-significant coefficient, on which the
+#'         testing procedure stopped. }
 #'       \item{$response}{ Tests of every single response variable (a
 #'         3-dimensional array), had such tests been requested while calling the
 #'         testing function, \code{NULL} otherwise. }
 #'       \item{$permutations}{ Details about permutation testing not shown in
-#'         \code{test$global} or \code{test$response}. \code{NULL} for
-#'         parametric testing. }
+#'         `test$global` or `test$response`. \code{NULL} for parametric
+#'         testing. }
 #'     }
 #'   }
 #' }
@@ -490,4 +487,4 @@ predict.cdp <- function (object, selection, newdata, components = FALSE, ...) {
     return(list(predicted=pred, components=cpns))
   } else return(pred)
 }
-##
+#' 

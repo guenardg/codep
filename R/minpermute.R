@@ -1,6 +1,6 @@
 ## **************************************************************************
 ##
-##    (c) 2018-2021 Guillaume Guénard
+##    (c) 2018-2022 Guillaume Guénard
 ##        Department de sciences biologiques,
 ##        Université de Montréal
 ##        Montreal, QC, Canada
@@ -34,7 +34,7 @@
 #' @param alpha The familywise type I error threshold allowable for the complete
 #' analysis.
 #' @param nbtest The number of test performed (the number of eigenvectors in the
-#' \sQuote{mem} object in the case of \code{\link{MCA}}).
+#' `mem` object in the case of \code{\link{MCA}}).
 #' @param margin A margin allowed for the number of permutation. Default value:
 #' 1.
 #' @param ru The magnitude of the round-up to apply to the number of
@@ -44,9 +44,9 @@
 #' \code{\link{permute.cdp}}.
 #' 
 #' @details This function calculate the number of permutations for use with
-#' \code{\link{permute.cdp}}. Parameter \code{margin} allows to apply a safe
+#' \code{\link{permute.cdp}}. Argument \code{margin} allows to apply a safe
 #' margin to the number of permutations. The minimal suitable value for this
-#' parameter is 1. Parameter \code{ru} allows one to round-up the number of
+#' parameter is 1. Argument \code{ru} allows one to round-up the number of
 #' permutations. A value of 0 implies no round-up, a value of 1 a round-up to
 #' the next ten, 2 a round-up to the next hundred, and so on. Function
 #' \code{\link{minpermute}} is called internally by \code{\link{permute.cdp}} in
@@ -74,7 +74,7 @@
 #' minpermute(alpha = 0.05, nbtest=50, margin=10, ru=3)
 #' 
 #' @export
-minpermute <- function(alpha, nbtest, margin=1, ru=3)
+minpermute <- function(alpha, nbtest, margin = 1, ru = 3)
   return(
     round(
       floor(
@@ -83,3 +83,4 @@ minpermute <- function(alpha, nbtest, margin=1, ru=3)
       -ru
     ) + (10^ru) - 1
   )
+#' 
