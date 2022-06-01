@@ -8,7 +8,7 @@ Author: Guillaume Guenard and Pierre Legendre, Bertrand Pages
 Maintainer: Guillaume Guenard <guillaume.guenard@gmail.com>
 Description: Computation of Multiscale Codependence Analysis and spatial eigenvector maps.
 Depends: R (>= 3.5.0)
-Suggests: knitr, vegan, rmarkdown
+Suggests: knitr, rmarkdown
 Imports: grDevices, graphics, stats, parallel
 License: GPL-3
 LazyLoad: yes
