@@ -50,6 +50,9 @@
 #' for ordination of species data. Oecologia 129: 271-280
 #' doi: 10.1007/s004420100716
 #' 
+#' @importFrom stats dist
+#' @importFrom graphics mtext
+#' 
 #' @examples
 #' 
 #' data(Doubs)
