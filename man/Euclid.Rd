@@ -32,15 +32,13 @@ when argument \code{y} is omitted), the function returns the pairwise
 distances in the form of a `\link{dist}-class` object representing a
 lower-triangle matrix. If weights are omitted, the result is identical to
 that produced by function \link{dist} with argument
-\code{method = "euclidean"} (the function's default). When weights are
-provided, the weighted Euclidean distance is calculated.
+\code{method = "euclidean"} (the function's default).
 
 The standard `R` function used to calculate the Euclidean distance
 (\code{\link{dist}}), only allows one to calculate pairwise distances between
 the rows of a single matrix of Cartesian coordinates and return a
 `\link{dist}-class` object, which is a one-dimensional array meant to be
-interpreted as a lower-triangular matrix. In addition to allowing one to
-calculate weighted Euclidean distances, function \code{Euclid} can also be
+interpreted as a lower-triangular matrix. Function \code{Euclid} can also be
 provided two data matrices (arguments \code{x} and \code{y}) and output a
 rectangular matrix of the Euclidean distances.
 }

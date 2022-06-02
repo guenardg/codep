@@ -126,6 +126,8 @@
 #' mtext(text="True geographic distance", side=1, line=-1.5, outer=TRUE)
 #' mtext(text="Ecological distance", side=2, line=-1.5, outer=TRUE)
 #' 
+#' @useDynLib codep, .registration = TRUE
+#' 
 #' @export
 LGTransforms <- function(x, method = c("chord","chisq","profile","Hellinger")) {
   method <- match.arg(method)

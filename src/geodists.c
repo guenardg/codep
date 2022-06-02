@@ -5,7 +5,7 @@
  
  **Geographic Distances**
  
- This file is part of SVMP
+ This file is part of codep
  
  codep is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
