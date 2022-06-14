@@ -120,7 +120,7 @@ mca1_partest <- test.cdp(mca1)
 mca1_partest
 summary(mca1_partest)
 par(mar = c(6,4,2,4))
-plot(mca1_partest, las = 3)
+plot(mca1_partest, las = 3, lwd=2)
 mca1_pertest <- permute.cdp(mca1)
 \dontrun{
 ## or:
@@ -139,7 +139,7 @@ mca2_partest <- test.cdp(mca2)
 mca2_partest
 summary(mca2_partest)
 par(mar = c(6,4,2,4))
-plot(mca2_partest, las = 3)
+plot(mca2_partest, las = 3, lwd=2)
 mca2_pertest <- permute.cdp(mca2)
 \dontrun{
 ## or:
@@ -147,7 +147,7 @@ mca2_pertest <- permute.cdp(mca2)
 }
 mca2_pertest
 summary(mca2_pertest)
-plot(mca2_pertest, las = 3)
+plot(mca2_pertest, las = 3, lwd=2)
 mca2_pertest$UpYXcb$C # Array containing the codependence coefficients
 mca2_pertest$UpYXcb$C[,1L,] # now turned into a matrix.
 
@@ -155,36 +155,50 @@ mca2_pertest$UpYXcb$C[,1L,] # now turned into a matrix.
 
 data(Doubs)
 
-## Creating a spatial eigenvector map:
-map2 <- eigenmap(x = Doubs.geo[,"DFS"])
+## Sites with no fish observed are excluded:
+excl <- which(rowSums(Doubs.fish) == 0)
 
-mca3 <- MCA(Y = log1p(Doubs.fish), X=Doubs.env, emobj = map2)
-mca3
+## Creating a spatial eigenvector map:
+map2 <- eigenmap(x = Doubs.geo[-excl,"DFS"])
+## The eigenvalues are in map2$lambda, the MEM eigenvectors in matrix map2$U
+
+## MCA with multivariate response data analyzed on the basis of the Hellinger
+## distance:
+Y <- LGTransforms(Doubs.fish[-excl,],"Hellinger")
+
+mca3 <- MCA(Y = Y, X=Doubs.env[-excl,], emobj = map2)
 mca3_pertest <- permute.cdp(mca3)
 \dontrun{
-  ## or:
-  mca3_pertest <- parPermute.cdp(mca3, permute = 999999)
+## or:
+mca3_pertest <- parPermute.cdp(mca3, permute = 999999)
 }
+
 mca3_pertest
 summary(mca3_pertest)
 par(mar = c(6,4,2,4))
-plot(mca3_pertest, las = 2)
-mca3_pertest$UpYXcb$C # Array containing the codependence coefficients
+plot(mca3_pertest, las = 2, lwd=2)
+
+## Array containing all the codependence coefficients:
+mca3_pertest$UpYXcb$C
 
 ## Display the results along the transect
-spmeans <- colMeans(log1p(Doubs.fish))
-pca1 <- svd(log1p(Doubs.fish) - rep(spmeans,each=nrow(Doubs.fish)))
+spmeans <- colMeans(Y)
+pca1 <- svd(Y - rep(spmeans, each=nrow(Y)))
 par(mar = c(5,5,2,5) + 0.1)
-plot(y = pca1$u[,1L], x = Doubs.geo[,"DFS"], pch = 21L, bg = "red",
+plot(y = pca1$u[,1L], x = Doubs.geo[-excl,"DFS"], pch = 21L, bg = "red",
      ylab = "PCA1 loadings", xlab = "Distance from river source (km)")
 
-x <- seq(0,450,1)
-newdists <- matrix(NA, length(x), nrow(Doubs.geo))
-for(i in 1L:nrow(newdists))
-  newdists[i,] <- abs(Doubs.geo[,"DFS"] - x[i])
+## A regular transect of sites from 0 to 450 (km) spaced by 1 km intervals
+## (451 sites in total). It is used for plotting spatially-explicit
+## predictions.
 
-## Calculating predictions for arbitrary sites under the same set of
-## environmental conditions that the codependence model was built with.
+x <- seq(0,450,1)
+newdists <- matrix(NA, length(x), nrow(Doubs.geo[-excl,]))
+for(i in 1L:nrow(newdists))
+  newdists[i,] <- abs(Doubs.geo[-excl,"DFS"] - x[i])
+
+## Calculating predictions for the regular transect under the same set of
+## environmental conditions from which the codependence model was built.
 prd1 <- predict(mca3_pertest,
                 newdata = list(target = eigenmap.score(map2, newdists)))
 
@@ -195,21 +209,21 @@ Uprd1 <-
 lines(y = Uprd1[,1L], x = x, col=2, lty = 1)
 
 ## Projection of the predicted species abundance on pca2:
-plot(y = pca1$u[,2L], x = Doubs.geo[,"DFS"], pch = 21L, bg = "red",
+plot(y = pca1$u[,2L], x = Doubs.geo[-excl,"DFS"], pch = 21L, bg = "red",
      ylab = "PCA2 loadings", xlab = "Distance from river source (km)")
-lines(y = Uprd1[,2L], x = x, col=2, lty = 1)
+lines(y = Uprd1[,2L], x = x, col = 2, lty = 1)
 
 ## Displaying only the observed and predicted abundance for Brown Trout.
 par(new = TRUE)
-plot(y = log1p(Doubs.fish[,"TRU"]), Doubs.geo[,"DFS"], pch = 21L,
-    bg = "green", ylab = "", xlab = "", new = FALSE, axes = FALSE)
+plot(y = Y[,"TRU"], Doubs.geo[-excl,"DFS"], pch = 21L,
+     bg = "green", ylab = "", xlab = "", new = FALSE, axes = FALSE)
 axis(4)
 lines(y = prd1[,"TRU"], x = x, col = 3)
-mtext(side = 4, "log(Abundance+1)", line = 2.5)
+mtext(side = 4, "sqrt(Brown trout rel. abundance)", line = 2.5)
 
 ### Example 3: Borcard et al. Oribatid Mite
 
-## Testing the ("2-D) spatial codependence between the Oribatid Mite
+## Testing the (2-dimensional) spatial codependence between the Oribatid Mite
 ## community structure and environmental variables, while displaying the
 ## total effects of the significant variables on the community structure
 ## (i.e., its first principal component).
@@ -217,16 +231,22 @@ mtext(side = 4, "log(Abundance+1)", line = 2.5)
 data(mite)
 
 map3 <- eigenmap(x = mite.geo)
+
+Y <- LGTransforms(mite.species, "Hellinger")
+
 ## Organize the environmental variables
-mca4 <- MCA(Y = log1p(mite.species), X = mite.env, emobj = map3)
+mca4 <- MCA(Y = Y, X = mite.env, emobj = map3)
 mca4_partest <- test.cdp(mca4, response.tests = FALSE)
 summary(mca4_partest)
 plot(mca4_partest, las = 2, lwd = 2)
 plot(mca4_partest, col = rainbow(1200)[1L:1000], las = 3, lwd = 4,
      main = "Codependence diagram", col.signif = "white")
 
-rng <- list(x = seq(min(mite.geo[,"x"]) - 0.1, max(mite.geo[,"x"]) + 0.1, 0.05),
-            y = seq(min(mite.geo[,"y"]) - 0.1, max(mite.geo[,"y"]) + 0.1, 0.05))
+## Making a regular point grid for plotting the spatially-explicit
+## predictions:
+rng <- list(
+  x = seq(min(mite.geo[,"x"]) - 0.1, max(mite.geo[,"x"]) + 0.1, 0.05),
+  y = seq(min(mite.geo[,"y"]) - 0.1, max(mite.geo[,"y"]) + 0.1, 0.05))
 grid <- cbind(x = rep(rng[["x"]], length(rng[["y"]])),
               y = rep(rng[["y"]], each = length(rng[["x"]])))
 newdists <- matrix(NA, nrow(grid), nrow(mite.geo))
@@ -235,21 +255,21 @@ for(i in 1L:nrow(grid)) {
                      (mite.geo[,"y"] - grid[i,"y"])^2)^0.5
 }
 
-spmeans <- colMeans(log1p(mite.species))
-pca2 <- svd(log1p(mite.species) - rep(spmeans, each = nrow(mite.species)))
+spmeans <- colMeans(Y)
+pca2 <- svd(Y - rep(spmeans, each = nrow(Y)))
 
 prd2 <- predict(mca4_partest,
                 newdata = list(target = eigenmap.score(map3, newdists)))
 Uprd2 <-
-(prd2 - rep(spmeans, each = nrow(prd2))) \%*\%
-pca2$v \%*\% diag(pca2$d^-1)
+  (prd2 - rep(spmeans, each = nrow(prd2))) \%*\%
+  pca2$v \%*\% diag(pca2$d^-1)
 
 ## Printing the response variable (first principal component of the mite
 ## community structure).
 prmat <- Uprd2[,1L]
 dim(prmat) <- c(length(rng$x), length(rng$y))
 zlim <- c(min(min(prmat), min(pca2$u[,1L])), max(max(prmat),
-          max(pca2$u[,1L])))
+                                                 max(pca2$u[,1L])))
 image(z = prmat, x = rng$x, y = rng$y, asp = 1, zlim = zlim,
       col = rainbow(1200L)[1L:1000], ylab = "y", xlab = "x")
 points(
