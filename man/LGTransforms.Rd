@@ -4,13 +4,24 @@
 \alias{LGTransforms}
 \title{Transformation for Species Abundance Data}
 \usage{
-LGTransforms(x, method = c("chord", "chisq", "profile", "Hellinger"))
+LGTransforms(
+  x,
+  method = c("chord", "chisq", "profile", "Hellinger"),
+  lambda = 1,
+  alpha = 1
+)
 }
 \arguments{
 \item{x}{A species abundance matrix (rows: sites, columns: species).}
 
 \item{method}{The transformation method, one of chord (the default), chisq,
 profile, Hellinger (see details).}
+
+\item{lambda}{Exponent for the Box Cox transformation to be applied before
+applying further transformation (defaut: 1, see Details).}
+
+\item{alpha}{Offset parameter for the Box Cox transformation to be applied
+before applying further transformation (defaut: 1, see Details).}
 }
 \value{
 A matrix of the transformed species abundances.
@@ -24,6 +35,12 @@ Multivariate least squares methods for ordination methods, such as
 the principal component analysis, or modelling methods, such as the
 multiscale codependence analysis (\code{\link{MCA}}), the canonical
 redundancy analysis (RDA).
+
+The Box Cox transformation involves the following equation:
+
+y' = (y + alpha)^lambda/lambda - 1   if lambda != 0
+
+y' = log(y + alpha)                  if lambda == 0
 }
 \examples{
 
@@ -35,11 +52,15 @@ x[rowSums(x)!=0,] -> x
 
 ## Transforming the abundances
 LGTransforms(x,"chord") -> chord
+LGTransforms(x,"chord",lambda=0) -> log.chord
+LGTransforms(x,"chord",lambda=0.25,alpha=0) -> pow.chord
 LGTransforms(x,"chisq") -> chisq
 LGTransforms(x,"profile") -> sp_pr
 LGTransforms(x,"Hellinger") -> Helli
 
 dist(chord)
+dist(log.chord)
+dist(pow.chord)
 dist(chisq)
 dist(sp_pr)
 dist(Helli)
@@ -65,7 +86,7 @@ plot(eco~geo, data=data.frame(geo=geo, eco=eco),
      ylab="Euclidean distance")
 
 ## Euclidean distances on the transformed abundances:
-par(mfrow=c(2,2), mar=c(5,5,4,2))
+par(mfrow=c(3,2), mar=c(3,5,4,2))
 
 LGTransforms(LGDat[,-1L],"chord") -> chord
 as.matrix(dist(chord)) -> eco
@@ -74,12 +95,30 @@ plot(eco~geo,data=data.frame(geo=geo,eco=eco),
      xaxp=c(1,18,17),las=1,xlab="",ylab="",
      main="Chord distance",ylim=c(0,max(eco)))
 
+LGTransforms(LGDat[,-1L],"chord",lambda=0) -> log.chord
+as.matrix(dist(log.chord)) -> eco
+eco[upper.tri(eco)] -> eco
+plot(eco~geo,data=data.frame(geo=geo,eco=eco),
+     xaxp=c(1,18,17),las=1,xlab="",ylab="",
+     main="Box-Cox Chord distance (log(x+1))",ylim=c(0,max(eco)))
+
+par(mar=c(4,5,3,2))
+
+LGTransforms(LGDat[,-1L],"chord",lambda=0.25) -> pow.chord
+as.matrix(dist(pow.chord)) -> eco
+eco[upper.tri(eco)] -> eco
+plot(eco~geo,data=data.frame(geo=geo,eco=eco),
+     xaxp=c(1,18,17),las=1,xlab="",ylab="",
+     main="Box-Cox Chord distance (lambda=0.25)",ylim=c(0,max(eco)))
+
 LGTransforms(LGDat[,-1L],"chisq") -> chisq
 as.matrix(dist(chisq)) -> eco
 eco[upper.tri(eco)] -> eco
 plot(eco~geo,data=data.frame(geo=geo,eco=eco),
      xaxp=c(1,18,17),las=1,xlab="",ylab="",
      main="Chi-square distance",ylim=c(0,max(eco)))
+
+par(mar=c(5,5,2,2))
 
 LGTransforms(LGDat[,-1L],"profile") -> sp_pr
 as.matrix(dist(sp_pr)) -> eco
