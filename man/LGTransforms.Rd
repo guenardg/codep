@@ -38,9 +38,9 @@ redundancy analysis (RDA).
 
 The Box Cox transformation involves the following equation:
 
-y' = (y + alpha)^lambda/lambda - 1   if lambda != 0
+y' = ((y + alpha)^lambda - 1)/lambda   if lambda != 0
 
-y' = log(y + alpha)                  if lambda == 0
+y' = log(y + alpha)                    if lambda == 0
 
 The default values for lambda (1) and alpha (1) correspond to applying no
 Box-Cox transformation, and thus, computer code attempt no transformation

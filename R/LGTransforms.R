@@ -48,9 +48,9 @@
 #' 
 #' The Box Cox transformation involves the following equation:
 #' 
-#' y' = (y + alpha)^lambda/lambda - 1   if lambda != 0
+#' y' = ((y + alpha)^lambda - 1)/lambda   if lambda != 0
 #' 
-#' y' = log(y + alpha)                  if lambda == 0
+#' y' = log(y + alpha)                    if lambda == 0
 #' 
 #' The default values for lambda (1) and alpha (1) correspond to applying no
 #' Box-Cox transformation, and thus, computer code attempt no transformation
@@ -180,7 +180,7 @@ LGTransforms <- function(x, method = c("chord","chisq","profile","Hellinger"),
     x <- as.matrix(x)
   if(!((lambda == 1) && (alpha == 1))) {
     if(lambda != 0) {
-      x <- (x + alpha)^lambda/lambda - 1
+      x <- ((x + alpha)^lambda - 1)/lambda
     } else {
       x <- log(x + alpha)
     }
