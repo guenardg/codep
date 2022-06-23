@@ -41,6 +41,10 @@ The Box Cox transformation involves the following equation:
 y' = (y + alpha)^lambda/lambda - 1   if lambda != 0
 
 y' = log(y + alpha)                  if lambda == 0
+
+The default values for lambda (1) and alpha (1) correspond to applying no
+Box-Cox transformation, and thus, computer code attempt no transformation
+when both default values are used.
 }
 \examples{
 
@@ -139,9 +143,16 @@ mtext(text="Ecological distance", side=2, line=-1.5, outer=TRUE)
 
 }
 \references{
-Legendre, P. & Gallagher E. D. 2001. Ecologically meaningful transformations
+Legendre P. & Gallagher E. D. 2001. Ecologically meaningful transformations
 for ordination of species data. Oecologia 129: 271-280
 doi: 10.1007/s004420100716
+
+Box G. E. P. & Cox D. R. 1964. An analysis of transformations. Journal of
+the Royal Statistical Society Series B 26: 211-243
+
+Legendre P. & Borcard D. 2018. Box-Cox-chord transformations for community
+composition data prior to beta diversity analysis. Ecography 41: 1820-1824.
+doi: 0.1111/ecog.03498
 }
 \author{
 \packageAuthor{codep}
