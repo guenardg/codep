@@ -7,21 +7,22 @@
 LGTransforms(
   x,
   method = c("chord", "chisq", "profile", "Hellinger"),
-  lambda = 1,
-  alpha = 1
+  offset = 0,
+  power = 1
 )
 }
 \arguments{
 \item{x}{A species abundance matrix (rows: sites, columns: species).}
 
-\item{method}{The transformation method, one of chord (the default), chisq,
-profile, Hellinger (see details).}
+\item{method}{The transformation method, one of "chord" (the default),
+"chisq", "profile", or "Hellinger" (see details).}
 
-\item{lambda}{Exponent for the Box Cox transformation to be applied before
-applying further transformation (defaut: 1, see Details).}
+\item{offset}{Offset value applied to all the columns of \code{x} prior to
+the other transformations (default: \code{0}, see Details).}
 
-\item{alpha}{Offset parameter for the Box Cox transformation to be applied
-before applying further transformation (defaut: 1, see Details).}
+\item{power}{Exponent for the power transformation (Box-Cox) applied
+to all columns of \code{x} after the offset and before the transformation
+specified by argument \code{method} (default: \code{1}, see Details).}
 }
 \value{
 A matrix of the transformed species abundances.
@@ -31,20 +32,25 @@ Calculates the transformed species abundances following Legendre and
 Gallagher.
 }
 \details{
-Multivariate least squares methods for ordination methods, such as
-the principal component analysis, or modelling methods, such as the
-multiscale codependence analysis (\code{\link{MCA}}), the canonical
-redundancy analysis (RDA).
+These transformations of species abundances values are useful for
+multivariate least squares methods for ordination methods, such as the
+principal component analysis, or modelling methods, such as the multiscale
+codependence analysis (\code{\link{MCA}}), the canonical redundancy analysis
+(RDA). They allow one to use least squares methods, which operate on the
+basis of the Euclidean metric, on species abundance data, for which the
+Euclidean metric have generally inadequate properties (see Legendre &
+Gallagher 2001 and Legendre & Borcard 2018, in references below, for a
+thorough discussion on the topic).
 
-The Box Cox transformation involves the following equation:
+The power (Box Cox) transformation involves the following equation:
 
-y' = ((y + alpha)^lambda - 1)/lambda   if lambda != 0
+y' = (y + offset)^power    if power != 0
 
-y' = log(y + alpha)                    if lambda == 0
+y' = log(y + offset)       if power == 0
 
-The default values for lambda (1) and alpha (1) correspond to applying no
-Box-Cox transformation, and thus, computer code attempt no transformation
-when both default values are used.
+The default values for \code{offset} (\code{0}) and \code{power} (\code{1})
+correspond to applying no transformation besides that specified by argument
+\code{methods}.
 }
 \examples{
 
@@ -56,8 +62,8 @@ x[rowSums(x)!=0,] -> x
 
 ## Transforming the abundances
 LGTransforms(x,"chord") -> chord
-LGTransforms(x,"chord",lambda=0) -> log.chord
-LGTransforms(x,"chord",lambda=0.25,alpha=0) -> pow.chord
+LGTransforms(x,"chord",offset=1,power=0) -> log.chord
+LGTransforms(x,"chord",power=0.25) -> pow.chord
 LGTransforms(x,"chisq") -> chisq
 LGTransforms(x,"profile") -> sp_pr
 LGTransforms(x,"Hellinger") -> Helli
@@ -99,21 +105,21 @@ plot(eco~geo,data=data.frame(geo=geo,eco=eco),
      xaxp=c(1,18,17),las=1,xlab="",ylab="",
      main="Chord distance",ylim=c(0,max(eco)))
 
-LGTransforms(LGDat[,-1L],"chord",lambda=0) -> log.chord
+LGTransforms(LGDat[,-1L],"chord",offset=1,power=0) -> log.chord
 as.matrix(dist(log.chord)) -> eco
 eco[upper.tri(eco)] -> eco
 plot(eco~geo,data=data.frame(geo=geo,eco=eco),
      xaxp=c(1,18,17),las=1,xlab="",ylab="",
-     main="Box-Cox Chord distance (log(x+1))",ylim=c(0,max(eco)))
+     main="Chord distance (log(x+1))",ylim=c(0,max(eco)))
 
 par(mar=c(4,5,3,2))
 
-LGTransforms(LGDat[,-1L],"chord",lambda=0.25) -> pow.chord
+LGTransforms(LGDat[,-1L],"chord",power=0.25) -> pow.chord
 as.matrix(dist(pow.chord)) -> eco
 eco[upper.tri(eco)] -> eco
 plot(eco~geo,data=data.frame(geo=geo,eco=eco),
      xaxp=c(1,18,17),las=1,xlab="",ylab="",
-     main="Box-Cox Chord distance (lambda=0.25)",ylim=c(0,max(eco)))
+     main="Chord distance (power=0.25)",ylim=c(0,max(eco)))
 
 LGTransforms(LGDat[,-1L],"chisq") -> chisq
 as.matrix(dist(chisq)) -> eco
