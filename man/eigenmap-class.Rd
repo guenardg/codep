@@ -50,11 +50,11 @@ hit \emph{Esc} on the \code{quartz} graphical device driver (Mac OS X users).
 }
 \section{Functions}{
 \itemize{
-\item \code{print.eigenmap}: Print method for eigenmap-class objects
+\item \code{print(eigenmap)}: Print method for eigenmap-class objects
 
-\item \code{plot.eigenmap}: Plot method for eigenmap-class objects
+\item \code{plot(eigenmap)}: Plot method for eigenmap-class objects
+
 }}
-
 \references{
 Borcard, D. and Legendre, P. 2002. All-scale spatial analysis of ecological
 data by means of principal coordinates of neighbour matrices. Ecol. Model.

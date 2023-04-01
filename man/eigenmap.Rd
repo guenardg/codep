@@ -70,13 +70,13 @@ from a call to \code{\link{hclust}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{eigenmap}: Main function for generating an eigenmap-class object from Cartesian
+\item \code{eigenmap()}: Main function for generating an eigenmap-class object from Cartesian
 coordinates or pairwise distances.
 
-\item \code{eigenmap.score}: Generate scores for arbitrary locations within the scope of an existing
+\item \code{eigenmap.score()}: Generate scores for arbitrary locations within the scope of an existing
 eigenvector map.
-}}
 
+}}
 \examples{
 ### Example 1: A linear transect.
 data(salmon)

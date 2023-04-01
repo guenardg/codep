@@ -62,15 +62,15 @@ tests can be performed.
 }
 \section{Functions}{
 \itemize{
-\item \code{dphi}: Probability density function for the phi statistics
+\item \code{dphi()}: Probability density function for the phi statistics
 
-\item \code{pphi}: Distribution function for the phi statistics
+\item \code{pphi()}: Distribution function for the phi statistics
 
-\item \code{dtau}: Probability density function for the tau statistics
+\item \code{dtau()}: Probability density function for the tau statistics
 
-\item \code{ptau}: Distribution function for the tau statistics
+\item \code{ptau()}: Distribution function for the tau statistics
+
 }}
-
 \examples{
 ### Displays the phi probability distribution for five different numbers
 ### of degrees of freedom:

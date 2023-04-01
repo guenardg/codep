@@ -1,6 +1,6 @@
 ## **************************************************************************
 ##
-##    (c) 2018-2022 Guillaume Guénard
+##    (c) 2018-2023 Guillaume Guénard
 ##        Department de sciences biologiques,
 ##        Université de Montréal
 ##        Montreal, QC, Canada
@@ -76,6 +76,9 @@
 #' Legendre P. & Borcard D. 2018. Box-Cox-chord transformations for community
 #' composition data prior to beta diversity analysis. Ecography 41: 1820-1824.
 #' doi: 0.1111/ecog.03498
+#' 
+#' Legendre, P. & Legendre, L. 2012. Numerical Ecology, Third English Edition.
+#' Elsevier B. V. Amsterdam, The Netherlands.
 #' 
 #' @importFrom stats dist
 #' @importFrom graphics mtext
@@ -175,10 +178,37 @@
 #' mtext(text="True geographic distance", side=1, line=-1.5, outer=TRUE)
 #' mtext(text="Ecological distance", side=2, line=-1.5, outer=TRUE)
 #' 
+#' ## Examples from Legendre & Legendre 2012, page 329 (Figure 7.8):
+#' 
+#' matrix(c(0,0,1,4,1,0,8,1,0),3L,3L) -> LL329
+#' 
+#' ## D1:  Euclidean distance
+#' dist(LL329)
+#' 
+#' ## Chord transformation (D3: chord distance)
+#' LGTransforms(LL329,"chord") -> tr       
+#' tr
+#' dist(tr)
+#' 
+#' ## "Species profile" transformation (D18)
+#' LGTransforms(LL329,"profile") -> tr       
+#' tr
+#' dist(tr)
+#' 
+#' ## Hellinger transformation (D17: Hellinger distance)
+#' LGTransforms(LL329,"Hellinger") -> tr       
+#' tr
+#' dist(tr)
+#' 
+#' ## Chi-square transformation (D16: Chi-square distance)
+#' LGTransforms(LL329,"chisq") -> tr       
+#' tr
+#' dist(tr)
+#' 
 #' @useDynLib codep, .registration = TRUE
 #' 
 #' @export
-LGTransforms <- function(x,method = c("chord","chisq","profile","Hellinger"),
+LGTransforms <- function(x, method = c("chord","chisq","profile","Hellinger"),
                          offset = 0, power = 1) {
   method <- match.arg(method)
   method <- match(method, c("chord","chisq","profile","Hellinger"))

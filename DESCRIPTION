@@ -1,7 +1,7 @@
 Package: codep
 Type: Package
-Version: 1.2-1
-Date: 2022-06-01
+Version: 1.2-2
+Date: 2023-04-01
 Encoding: UTF-8
 Title: Multiscale Codependence Analysis
 Author: Guillaume Guenard and Pierre Legendre, Bertrand Pages
@@ -15,4 +15,4 @@ LazyLoad: yes
 NeedsCompilation: yes
 VignetteBuilder: knitr
 Repository: CRAN
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1

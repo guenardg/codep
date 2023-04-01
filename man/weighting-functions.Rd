@@ -115,27 +115,27 @@ any number of elements. They should be added to the R-code file
 }
 \section{Functions}{
 \itemize{
-\item \code{wf.sqrd}: Principal coordinates of the square-root distance matrix (Diniz-Filho et al.
+\item \code{wf.sqrd()}: Principal coordinates of the square-root distance matrix (Diniz-Filho et al.
 2013).
 
-\item \code{wf.RBF}: Radial basis functions with the observations as the kernels.
+\item \code{wf.RBF()}: Radial basis functions with the observations as the kernels.
 
-\item \code{wf.PCNM}: Borcard & Legendre's (2002) principal coordinates of the neighbour matrix
+\item \code{wf.PCNM()}: Borcard & Legendre's (2002) principal coordinates of the neighbour matrix
 approach.
 
-\item \code{wf.binary}: Dray et al. (2006) Moran's eigenvector maps (distance-based binary
+\item \code{wf.binary()}: Dray et al. (2006) Moran's eigenvector maps (distance-based binary
 connections without continuous weighting of the neighbours).
 
-\item \code{wf.Drayf1}: Dray et al. (2006) Moran's eigenvector maps (distance-based binary
+\item \code{wf.Drayf1()}: Dray et al. (2006) Moran's eigenvector maps (distance-based binary
 connections with continuous weighting of the neighbours: f1).
 
-\item \code{wf.Drayf2}: Dray et al. (2006) Moran's eigenvector maps (distance-based binary
+\item \code{wf.Drayf2()}: Dray et al. (2006) Moran's eigenvector maps (distance-based binary
 connections with continuous weighting of the neighbours: f2).
 
-\item \code{wf.Drayf3}: Dray et al. (2006) Moran's eigenvector maps (distance-based binary
+\item \code{wf.Drayf3()}: Dray et al. (2006) Moran's eigenvector maps (distance-based binary
 connections with continuous weighting of the neighbours: f3).
-}}
 
+}}
 \examples{
 locations <- c(1,2,4,7,10,14,17,21)
 D <- dist(locations)

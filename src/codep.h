@@ -1,6 +1,6 @@
 /*************************************************************************
  
- (c) 2008-2020 Guillaume Guénard
+ (c) 2008-2023 Guillaume Guénard
  Université de Montréal, Montreal, Quebec, Canada
  
  **Permutation Test for Multiscale Codependence Analysis**

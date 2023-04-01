@@ -124,19 +124,19 @@ those of \link{codep-package}.
 }
 \section{Functions}{
 \itemize{
-\item \code{print.cdp}: Print method for cdp-class objects.
+\item \code{print(cdp)}: Print method for cdp-class objects.
 
-\item \code{plot.cdp}: Plot method for cdp-class objects.
+\item \code{plot(cdp)}: Plot method for cdp-class objects.
 
-\item \code{summary.cdp}: Summary method for cdp-class objects.
+\item \code{summary(cdp)}: Summary method for cdp-class objects.
 
-\item \code{fitted.cdp}: Fitted method for cdp-class objects.
+\item \code{fitted(cdp)}: Fitted method for cdp-class objects.
 
-\item \code{residuals.cdp}: Residuals method for cdp-class objects.
+\item \code{residuals(cdp)}: Residuals method for cdp-class objects.
 
-\item \code{predict.cdp}: Predict method for cdp-class objects.
+\item \code{predict(cdp)}: Predict method for cdp-class objects.
+
 }}
-
 \references{
 Guénard, G., Legendre, P., Boisclair, D., and Bilodeau, M. 2010. Multiscale
 codependence analysis: an integrated approach to analyse relationships across

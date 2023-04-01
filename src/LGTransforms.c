@@ -1,6 +1,6 @@
 /*************************************************************************
  
- (c) 2008-2022 Guillaume Guénard
+ (c) 2008-2023 Guillaume Guénard
  Université de Montréal, Montreal, Quebec, Canada
  
  **Legendre and Gallagher 2001 distance transformations**

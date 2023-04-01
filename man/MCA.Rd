@@ -90,16 +90,16 @@ maximum value \code{.Machine$integer.max}.
 }
 \section{Functions}{
 \itemize{
-\item \code{MCA}: Main function to compute the multiscale codependence analysis
+\item \code{MCA()}: Main function to compute the multiscale codependence analysis
 
-\item \code{test.cdp}: Parametric statistical testing for multiscale codependence analysis
+\item \code{test.cdp()}: Parametric statistical testing for multiscale codependence analysis
 
-\item \code{permute.cdp}: Permutation testing for multiscale codependence analysis.
+\item \code{permute.cdp()}: Permutation testing for multiscale codependence analysis.
 
-\item \code{parPermute.cdp}: Permutation testing for multiscale codependence analysis using parallel
+\item \code{parPermute.cdp()}: Permutation testing for multiscale codependence analysis using parallel
 processing.
-}}
 
+}}
 \examples{
 ### Example 1: St. Marguerite River Salmon Transect
 data(salmon)

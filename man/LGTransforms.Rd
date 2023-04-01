@@ -147,6 +147,33 @@ plot(eco~geo,data=data.frame(geo=geo,eco=eco),
 mtext(text="True geographic distance", side=1, line=-1.5, outer=TRUE)
 mtext(text="Ecological distance", side=2, line=-1.5, outer=TRUE)
 
+## Examples from Legendre & Legendre 2012, page 329 (Figure 7.8):
+
+matrix(c(0,0,1,4,1,0,8,1,0),3L,3L) -> LL329
+
+## D1:  Euclidean distance
+dist(LL329)
+
+## Chord transformation (D3: chord distance)
+LGTransforms(LL329,"chord") -> tr       
+tr
+dist(tr)
+
+## "Species profile" transformation (D18)
+LGTransforms(LL329,"profile") -> tr       
+tr
+dist(tr)
+
+## Hellinger transformation (D17: Hellinger distance)
+LGTransforms(LL329,"Hellinger") -> tr       
+tr
+dist(tr)
+
+## Chi-square transformation (D16: Chi-square distance)
+LGTransforms(LL329,"chisq") -> tr       
+tr
+dist(tr)
+
 }
 \references{
 Legendre P. & Gallagher E. D. 2001. Ecologically meaningful transformations
@@ -159,6 +186,9 @@ the Royal Statistical Society Series B 26: 211-243
 Legendre P. & Borcard D. 2018. Box-Cox-chord transformations for community
 composition data prior to beta diversity analysis. Ecography 41: 1820-1824.
 doi: 0.1111/ecog.03498
+
+Legendre, P. & Legendre, L. 2012. Numerical Ecology, Third English Edition.
+Elsevier B. V. Amsterdam, The Netherlands.
 }
 \author{
 \packageAuthor{codep}
